@@ -9,61 +9,59 @@
 <body>
 
     <main class="container">
-        <!-- Formulaire d'inscription -->
         <form id="signup-form" novalidate>
             <h2>Inscription</h2>
-            
-            <div id="error-message" class="error hidden"></div>
+
+            <div id="error-message" class="error hidden" role="alert" aria-live="polite"></div>
 
             <div class="form-group">
                 <label for="login">Login :</label>
-                <input type="text" id="login" name="login" required>
+                <input type="text" id="login" name="login" autocomplete="username" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" autocomplete="new-password" required>
             </div>
 
             <div class="form-group">
                 <label for="confirm-password">Confirmation du mot de passe :</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
+                <input type="password" id="confirm-password" name="confirm-password" autocomplete="new-password" required>
             </div>
 
             <div class="form-group">
                 <label for="nom">Nom :</label>
-                <input type="text" id="nom" name="nom" required>
+                <input type="text" id="nom" name="nom" autocomplete="family-name" required>
             </div>
 
             <div class="form-group">
                 <label for="prenom">Prénom :</label>
-                <input type="text" id="prenom" name="prenom" required>
+                <input type="text" id="prenom" name="prenom" autocomplete="given-name" required>
             </div>
 
             <div class="form-group">
                 <label for="adresse">Adresse :</label>
-                <input type="text" id="adresse" name="adresse" required>
+                <input type="text" id="adresse" name="adresse" autocomplete="street-address" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email :</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" autocomplete="email" required>
             </div>
 
             <div class="form-group">
                 <label for="telephone">Téléphone :</label>
-                <input type="tel" id="telephone" name="telephone" required>
+                <input type="tel" id="telephone" name="telephone" autocomplete="tel" required>
             </div>
 
             <div class="form-group">
                 <label for="naissance">Date de naissance :</label>
-                <input type="date" id="naissance" name="naissance" required>
+                <input type="date" id="naissance" name="naissance" autocomplete="bday" required>
             </div>
 
             <button type="submit">S'inscrire</button>
         </form>
 
-        <!-- Page récapitulative (masquée au départ) -->
         <div id="summary-page" class="hidden">
             <h2>Récapitulatif de votre inscription</h2>
             <div id="summary-content"></div>
