@@ -1,0 +1,146 @@
+/* Page complète en fond clair pastel */
+/* Page complète avec un mélange dégradé Rose Pastel & Jaune Pastel */
+.signup-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  /* Dégradé fluide Rose Pastel (#fce7f3) vers Jaune Pastel (#fef3c7) */
+  background: linear-gradient(135deg, #fce7f3 0%, #fff1f2 40%, #fef3c7 100%);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.signup-content {
+  width: 100%;
+  max-width: 580px;
+}
+
+.signup-content h2 {
+  margin-top: 0;
+  margin-bottom: 35px;
+  font-size: 2.2rem;
+  text-align: center;
+  font-weight: 800;
+  color: #334155;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* Base commune pour les bulles 3D */
+input {
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Couleurs pastel différentes pour chaque bulle */
+.input-login {
+  background-color: #fef3c7; /* Jaune pastel */
+  color: #78350f;
+}
+
+.input-password {
+  background-color: #e0e7ff; /* Bleu/Indigo pastel */
+  color: #3730a3;
+}
+
+.input-confirm {
+  background-color: #ede9fe; /* Violet pastel */
+  color: #5b21b6;
+}
+
+.input-lastname {
+  background-color: #dcfce7; /* Vert pastel */
+  color: #166534;
+}
+
+.input-firstname {
+  background-color: #ffedd5; /* Orange pastel */
+  color: #9a3412;
+}
+
+.input-email {
+  background-color: #fae8ff; /* Rose/Fuchsia pastel */
+  color: #86198f;
+}
+
+/* Effet focus au clic sur les bulles */
+input:focus {
+  transform: scale(1.01);
+  border-color: #94a3b8;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Erreur */
+input.ng-invalid.ng-touched {
+  border-color: #f87171;
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+/* Bouton 3D Pastel */
+.btn-submit {
+  margin-top: 15px;
+  padding: 16px;
+  background: #38bdf8; /* Cyan pastel dynamique */
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #0284c7, 0 10px 20px rgba(56, 189, 248, 0.3);
+  transition: all 0.15s ease-in-out;
+  position: relative;
+  top: 0;
+}
+
+.btn-submit:hover:not(:disabled) {
+  top: -2px;
+  box-shadow: 0 8px 0 #0284c7, 0 14px 24px rgba(56, 189, 248, 0.4);
+}
+
+.btn-submit:active:not(:disabled) {
+  top: 4px;
+  box-shadow: 0 2px 0 #0284c7, 0 4px 10px rgba(56, 189, 248, 0.2);
+}
+
+.btn-submit:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+  top: 0;
+}
