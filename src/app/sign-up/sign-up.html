@@ -1,0 +1,114 @@
+<div class="signup-container">
+  <div class="signup-content">
+    <h2>Formulaire d'inscription</h2>
+
+    <form #signUpForm="ngForm" (ngSubmit)="onSubmit(signUpForm)">
+      <!-- Login -->
+      <div class="form-group">
+        <label for="login">Login *</label>
+        <input 
+          type="text" 
+          id="login" 
+          name="login" 
+          [(ngModel)]="user.login" 
+          required 
+          #loginCtrl="ngModel"
+          placeholder="Entrez votre login"
+        />
+        @if (loginCtrl.invalid && loginCtrl.touched) {
+          <span class="error-msg">Le login est requis.</span>
+        }
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <label for="password">Mot de passe *</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="user.password" 
+          required 
+          #passwordCtrl="ngModel"
+          placeholder="••••••••"
+        />
+        @if (passwordCtrl.invalid && passwordCtrl.touched) {
+          <span class="error-msg">Le mot de passe est requis.</span>
+        }
+      </div>
+
+      <!-- Confirmation du mot de passe -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmation du mot de passe *</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword" 
+          [(ngModel)]="user.confirmPassword" 
+          required 
+          #confirmPasswordCtrl="ngModel"
+          placeholder="••••••••"
+        />
+        @if (confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched) {
+          <span class="error-msg">La confirmation est requise.</span>
+        }
+      </div>
+
+      <!-- Nom -->
+      <div class="form-group">
+        <label for="lastName">Nom *</label>
+        <input 
+          type="text" 
+          id="lastName" 
+          name="lastName" 
+          [(ngModel)]="user.lastName" 
+          required 
+          #lastNameCtrl="ngModel"
+          placeholder="Votre nom"
+        />
+        @if (lastNameCtrl.invalid && lastNameCtrl.touched) {
+          <span class="error-msg">Le nom est requis.</span>
+        }
+      </div>
+
+      <!-- Prénom -->
+      <div class="form-group">
+        <label for="firstName">Prénom *</label>
+        <input 
+          type="text" 
+          id="firstName" 
+          name="firstName" 
+          [(ngModel)]="user.firstName" 
+          required 
+          #firstNameCtrl="ngModel"
+          placeholder="Votre prénom"
+        />
+        @if (firstNameCtrl.invalid && firstNameCtrl.touched) {
+          <span class="error-msg">Le prénom est requis.</span>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="user.email" 
+          required 
+          email 
+          #emailCtrl="ngModel"
+          placeholder="nom@exemple.com"
+        />
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+          <span class="error-msg">Un email valide est requis.</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="!signUpForm.valid">
+        S'inscrire
+      </button>
+    </form>
+  </div>
+</div>
