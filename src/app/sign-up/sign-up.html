@@ -1,114 +1,199 @@
-<div class="signup-container">
-  <div class="signup-content">
-    <h2>Formulaire d'inscription</h2>
+<main class="signup-container">
+  <div class="signup-card">
+    <header class="signup-header">
+      <h1>Créer un compte</h1>
+      <p class="subtitle">Veuillez remplir le formulaire pour vous inscrire.</p>
+    </header>
 
-    <form #signUpForm="ngForm" (ngSubmit)="onSubmit(signUpForm)">
-      <!-- Login -->
-      <div class="form-group">
-        <label for="login">Login *</label>
-        <input 
-          type="text" 
-          id="login" 
-          name="login" 
-          [(ngModel)]="user.login" 
-          required 
-          #loginCtrl="ngModel"
-          placeholder="Entrez votre login"
-        />
-        @if (loginCtrl.invalid && loginCtrl.touched) {
-          <span class="error-msg">Le login est requis.</span>
-        }
+    @if (isSubmitted()) {
+      <div class="alert alert-success" role="alert">
+        <h2>Inscription réussie !</h2>
+        <p>
+          Bienvenue <strong>{{ formData().prenom }} {{ formData().nom }}</strong>. 
+          Votre compte (<strong>{{ formData().login }}</strong>) a été créé avec succès.
+        </p>
+        <button type="button" class="btn btn-secondary" (click)="resetForm()">
+          Nouvelle inscription
+        </button>
       </div>
+    } @else {
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" novalidate>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="login">Login <span class="required">*</span></label>
+            <input
+              type="text"
+              id="login"
+              name="login"
+              [ngModel]="formData().login"
+              (ngModelChange)="onFieldChange('login', $event)"
+              #loginModel="ngModel"
+              required
+              placeholder="Ex: jdoe"
+              [class.is-invalid]="loginModel.invalid && loginModel.touched"
+            />
+            @if (loginModel.invalid && loginModel.touched) {
+              <span class="error-text">Le login est requis.</span>
+            }
+          </div>
 
-      <!-- Mot de passe -->
-      <div class="form-group">
-        <label for="password">Mot de passe *</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          [(ngModel)]="user.password" 
-          required 
-          #passwordCtrl="ngModel"
-          placeholder="••••••••"
-        />
-        @if (passwordCtrl.invalid && passwordCtrl.touched) {
-          <span class="error-msg">Le mot de passe est requis.</span>
-        }
-      </div>
+          <div class="form-group">
+            <label for="email">Adresse Email <span class="required">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [ngModel]="formData().email"
+              (ngModelChange)="onFieldChange('email', $event)"
+              #emailModel="ngModel"
+              required
+              email
+              placeholder="john.doe@example.com"
+              [class.is-invalid]="emailModel.invalid && emailModel.touched"
+            />
+            @if (emailModel.invalid && emailModel.touched) {
+              <span class="error-text">Veuillez saisir une adresse email valide.</span>
+            }
+          </div>
+        </div>
 
-      <!-- Confirmation du mot de passe -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirmation du mot de passe *</label>
-        <input 
-          type="password" 
-          id="confirmPassword" 
-          name="confirmPassword" 
-          [(ngModel)]="user.confirmPassword" 
-          required 
-          #confirmPasswordCtrl="ngModel"
-          placeholder="••••••••"
-        />
-        @if (confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched) {
-          <span class="error-msg">La confirmation est requise.</span>
-        }
-      </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nom">Nom <span class="required">*</span></label>
+            <input
+              type="text"
+              id="nom"
+              name="nom"
+              [ngModel]="formData().nom"
+              (ngModelChange)="onFieldChange('nom', $event)"
+              #nomModel="ngModel"
+              required
+              placeholder="Doe"
+              [class.is-invalid]="nomModel.invalid && nomModel.touched"
+            />
+            @if (nomModel.invalid && nomModel.touched) {
+              <span class="error-text">Le nom est requis.</span>
+            }
+          </div>
 
-      <!-- Nom -->
-      <div class="form-group">
-        <label for="lastName">Nom *</label>
-        <input 
-          type="text" 
-          id="lastName" 
-          name="lastName" 
-          [(ngModel)]="user.lastName" 
-          required 
-          #lastNameCtrl="ngModel"
-          placeholder="Votre nom"
-        />
-        @if (lastNameCtrl.invalid && lastNameCtrl.touched) {
-          <span class="error-msg">Le nom est requis.</span>
-        }
-      </div>
+          <div class="form-group">
+            <label for="prenom">Prénom <span class="required">*</span></label>
+            <input
+              type="text"
+              id="prenom"
+              name="prenom"
+              [ngModel]="formData().prenom"
+              (ngModelChange)="onFieldChange('prenom', $event)"
+              #prenomModel="ngModel"
+              required
+              placeholder="John"
+              [class.is-invalid]="prenomModel.invalid && prenomModel.touched"
+            />
+            @if (prenomModel.invalid && prenomModel.touched) {
+              <span class="error-text">Le prénom est requis.</span>
+            }
+          </div>
+        </div>
 
-      <!-- Prénom -->
-      <div class="form-group">
-        <label for="firstName">Prénom *</label>
-        <input 
-          type="text" 
-          id="firstName" 
-          name="firstName" 
-          [(ngModel)]="user.firstName" 
-          required 
-          #firstNameCtrl="ngModel"
-          placeholder="Votre prénom"
-        />
-        @if (firstNameCtrl.invalid && firstNameCtrl.touched) {
-          <span class="error-msg">Le prénom est requis.</span>
-        }
-      </div>
+        <div class="form-group">
+          <label for="motDePasse">Mot de passe <span class="required">*</span></label>
+          <div class="password-wrapper">
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              id="motDePasse"
+              name="motDePasse"
+              [ngModel]="formData().motDePasse"
+              (ngModelChange)="onFieldChange('motDePasse', $event)"
+              #pwdModel="ngModel"
+              required
+              placeholder="••••••••"
+              [class.is-invalid]="pwdModel.touched && !isPasswordValid()"
+            />
+            <button
+              type="button"
+              class="btn-toggle-password"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            >
+              @if (showPassword()) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                  <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                  <line x1="2" y1="2" x2="22" y2="22"></line>
+                </svg>
+              }
+            </button>
+          </div>
 
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email *</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          [(ngModel)]="user.email" 
-          required 
-          email 
-          #emailCtrl="ngModel"
-          placeholder="nom@exemple.com"
-        />
-        @if (emailCtrl.invalid && emailCtrl.touched) {
-          <span class="error-msg">Un email valide est requis.</span>
-        }
-      </div>
+          @if (formData().motDePasse.length > 0 || pwdModel.touched) {
+            <ul class="password-rules">
+              <li [class.valid]="passwordCriteria().minLength">Au moins 8 caractères</li>
+              <li [class.valid]="passwordCriteria().hasUppercase">Au moins 1 majuscule</li>
+              <li [class.valid]="passwordCriteria().hasLowercase">Au moins 1 minuscule</li>
+              <li [class.valid]="passwordCriteria().hasNumber">Au moins 1 chiffre</li>
+              <li [class.valid]="passwordCriteria().hasSpecialChar">Au moins 1 caractère spécial</li>
+            </ul>
+          }
+        </div>
 
-      <button type="submit" class="btn-submit" [disabled]="!signUpForm.valid">
-        S'inscrire
-      </button>
-    </form>
+        <div class="form-group">
+          <label for="confirmationMotDePasse">Confirmation du mot de passe <span class="required">*</span></label>
+          <div class="password-wrapper">
+            <input
+              [type]="showConfirmPassword() ? 'text' : 'password'"
+              id="confirmationMotDePasse"
+              name="confirmationMotDePasse"
+              [ngModel]="formData().confirmationMotDePasse"
+              (ngModelChange)="onFieldChange('confirmationMotDePasse', $event)"
+              #confirmPwdModel="ngModel"
+              required
+              placeholder="••••••••"
+              [class.is-invalid]="confirmPwdModel.touched && !isPasswordMatching()"
+            />
+            <button
+              type="button"
+              class="btn-toggle-password"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="showConfirmPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            >
+              @if (showConfirmPassword()) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                  <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                  <line x1="2" y1="2" x2="22" y2="22"></line>
+                </svg>
+              }
+            </button>
+          </div>
+          @if (confirmPwdModel.touched && !isPasswordMatching() && formData().confirmationMotDePasse) {
+            <span class="error-text">Les deux mots de passe ne correspondent pas.</span>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="signupForm.invalid || !isFormValid()"
+          >
+            S'inscrire
+          </button>
+        </div>
+
+      </form>
+    }
   </div>
-</div>
+</main>
