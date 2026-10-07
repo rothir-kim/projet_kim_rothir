@@ -1,12 +1,23 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { PollutionFormComponent } from './components/pollution-form/pollution-form';
+import { PollutionRecapComponent } from './components/pollution-recap/pollution-recap';
+import { PollutionData } from './models/pollution-model';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.scss',
+  standalone: true,
+  imports: [PollutionFormComponent, PollutionRecapComponent],
   templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('projet_kim_rothir');
+export class AppComponent {
+  currentPollution = signal<PollutionData | null>(null);
+
+  onPollutionSubmitted(data: PollutionData): void {
+    this.currentPollution.set(data);
+  }
+
+  onResetForm(): void {
+    this.currentPollution.set(null);
+  }
 }
