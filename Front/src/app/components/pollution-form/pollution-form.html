@@ -4,7 +4,7 @@
   <div class="form-grid">
     <div class="col">
       <div class="form-group">
-        <label for="titre">Titre de la pollution *</label>
+        <label for="titre">Titre *</label>
         <input id="titre" type="text" formControlName="titre" placeholder="Ex: Décharge sauvage en forêt" />
         @if (form.get('titre')?.invalid && form.get('titre')?.touched) {
           <span class="error-msg">Le titre est requis.</span>
