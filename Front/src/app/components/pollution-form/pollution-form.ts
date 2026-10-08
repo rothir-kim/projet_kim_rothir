@@ -31,8 +31,8 @@ export class PollutionFormComponent {
       description: ['', Validators.required],
       date: ['', Validators.required],
       lieu: ['', Validators.required],
-      latitude: [null, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-      longitude: [null, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+      latitude: [null, [Validators.required, Validators.min(-90), Validators.max(90)]],
+      longitude: [null, [Validators.required, Validators.min(-180), Validators.max(180)]],
       photoUrl: ['']
     });
 
