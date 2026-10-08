@@ -1,0 +1,12 @@
+<main class="main-layout">
+  @if (currentPollution(); as pollution) {
+    <app-pollution-recap 
+      [data]="pollution" 
+      (resetForm)="onResetForm()">
+    </app-pollution-recap>
+  } @else {
+    <app-pollution-form 
+      (pollutionSubmitted)="onPollutionSubmitted($event)">
+    </app-pollution-form>
+  }
+</main>

@@ -1,0 +1,88 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="pollution-form">
+  <h2>Déclaration d'une nouvelle pollution</h2>
+
+  <div class="form-grid">
+    <div class="col">
+      <div class="form-group">
+        <label for="titre">Titre *</label>
+        <input id="titre" type="text" formControlName="titre" placeholder="Ex: Décharge sauvage en forêt" />
+        @if (form.get('titre')?.invalid && form.get('titre')?.touched) {
+          <span class="error-msg">Le titre est requis.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="type">Type de pollution *</label>
+        <select id="type" formControlName="type">
+          <option value="" disabled selected>Sélectionnez un type</option>
+          @for (typeOption of typesPollution; track typeOption) {
+            <option [value]="typeOption">{{ typeOption }}</option>
+          }
+        </select>
+        @if (form.get('type')?.invalid && form.get('type')?.touched) {
+          <span class="error-msg">Le type de pollution est requis.</span>
+        }
+      </div>
+
+      @if (form.get('type')?.value === 'Autre') {
+        <div class="form-group">
+          <label for="typeAutre">Précisez le type de pollution *</label>
+          <input id="typeAutre" type="text" formControlName="typeAutre" placeholder="Ex: Nuissance sonore / Lumineuse" />
+          @if (form.get('typeAutre')?.invalid && form.get('typeAutre')?.touched) {
+            <span class="error-msg">Veuillez préciser le type de pollution.</span>
+          }
+        </div>
+      }
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" formControlName="description" rows="4" placeholder="Détaillez votre observation..."></textarea>
+        @if (form.get('description')?.invalid && form.get('description')?.touched) {
+          <span class="error-msg">La description est requise.</span>
+        }
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <label for="date">Date de l'observation *</label>
+        <input id="date" type="date" formControlName="date" />
+        @if (form.get('date')?.invalid && form.get('date')?.touched) {
+          <span class="error-msg">La date est requise.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="lieu">Lieu *</label>
+        <input id="lieu" type="text" formControlName="lieu" placeholder="Ex: Parc de la Citadelle" />
+        @if (form.get('lieu')?.invalid && form.get('lieu')?.touched) {
+          <span class="error-msg">Le lieu est requis.</span>
+        }
+      </div>
+
+      <div class="coords-row">
+        <div class="form-group">
+          <label for="latitude">Latitude *</label>
+          <input id="latitude" type="number" step="any" formControlName="latitude" placeholder="Ex: 45.764043" />
+          @if (form.get('latitude')?.invalid && form.get('latitude')?.touched) {
+            <span class="error-msg">Requis.</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="longitude">Longitude *</label>
+          <input id="longitude" type="number" step="any" formControlName="longitude" placeholder="Ex: 4.835659" />
+          @if (form.get('longitude')?.invalid && form.get('longitude')?.touched) {
+            <span class="error-msg">Requis.</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="photoUrl">Photo (URL optionnelle)</label>
+        <input id="photoUrl" type="url" formControlName="photoUrl" placeholder="https://exemple.com/photo.jpg" />
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn-submit">Déclarer</button>
+</form>
