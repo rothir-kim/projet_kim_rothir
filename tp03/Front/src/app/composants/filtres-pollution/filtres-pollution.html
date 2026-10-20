@@ -1,0 +1,27 @@
+<form class="filtres" aria-label="Filtrer les pollutions" novalidate>
+  <div class="champ">
+    <label for="filtre-lieu">Lieu</label>
+    <input id="filtre-lieu" name="lieu" type="text" autocomplete="off" placeholder="Ville, plage, forêt…"
+      [ngModel]="filtres().lieu" (ngModelChange)="changerLieu($event)" />
+  </div>
+  <div class="champ">
+    <label for="filtre-type">Type</label>
+    <select id="filtre-type" name="type" [ngModel]="filtres().type" (ngModelChange)="changerType($event)">
+      <option value="">Tous les types</option>
+      @for (type of types; track type) {
+        <option [value]="type">{{ type }}</option>
+      }
+    </select>
+  </div>
+  <div class="champ">
+    <label for="filtre-debut">Du</label>
+    <input id="filtre-debut" name="dateDebut" type="date"
+      [ngModel]="filtres().dateDebut" (ngModelChange)="changerDateDebut($event)" />
+  </div>
+  <div class="champ">
+    <label for="filtre-fin">Au</label>
+    <input id="filtre-fin" name="dateFin" type="date"
+      [ngModel]="filtres().dateFin" (ngModelChange)="changerDateFin($event)" />
+  </div>
+  <button type="button" class="bouton bouton--discret" (click)="reinitialiser()">Réinitialiser</button>
+</form>

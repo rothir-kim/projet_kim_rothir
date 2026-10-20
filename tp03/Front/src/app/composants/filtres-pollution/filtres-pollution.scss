@@ -1,0 +1,19 @@
+.filtres {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr auto;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
