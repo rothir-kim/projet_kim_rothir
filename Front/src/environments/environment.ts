@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://REMPLACER-PAR-URL-API-RENDER.onrender.com/api',
+  apiUrl: 'https://projet-kim-rothir-api.onrender.com/api',
 };
