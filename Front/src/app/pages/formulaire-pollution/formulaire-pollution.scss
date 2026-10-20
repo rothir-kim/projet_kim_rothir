@@ -1,0 +1,26 @@
+.formulaire__intro {
+  margin: 0.4rem 0 1.5rem;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.formulaire__grille {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formulaire__pleine {
+  grid-column: 1 / -1;
+}
+
+.formulaire__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}

@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1,
+    "titre": "Déchets plastiques sur la plage",
+    "type": "Plastique",
+    "description": "Accumulation de bouteilles, sacs et emballages le long de la laisse de mer après la marée haute.",
+    "date": "2026-09-14",
+    "lieu": "Plage du Prado, Marseille",
+    "latitude": 43.2578,
+    "longitude": 5.3716,
+    "urlPhoto": "https://picsum.photos/seed/plage/800/500"
+  },
+  {
+    "id": 2,
+    "titre": "Rejet suspect dans le canal",
+    "type": "Chimique",
+    "description": "Nappe irisée et odeur forte observées près d'une sortie de canalisation industrielle.",
+    "date": "2026-09-21",
+    "lieu": "Canal de Saint-Denis, Paris",
+    "latitude": 48.9229,
+    "longitude": 2.3584
+  },
+  {
+    "id": 3,
+    "titre": "Dépôt sauvage en lisière de forêt",
+    "type": "Dépôt sauvage",
+    "description": "Gravats, matelas et électroménager abandonnés sur un chemin forestier.",
+    "date": "2026-08-30",
+    "lieu": "Forêt de Fontainebleau, Seine-et-Marne",
+    "latitude": 48.4047,
+    "longitude": 2.6988,
+    "urlPhoto": "https://picsum.photos/seed/foret/800/500"
+  },
+  {
+    "id": 4,
+    "titre": "Eau trouble après des travaux",
+    "type": "Eau",
+    "description": "Rivière devenue marron sur plusieurs centaines de mètres en aval d'un chantier.",
+    "date": "2026-10-02",
+    "lieu": "Rivière de la Loue, Doubs",
+    "latitude": 47.0405,
+    "longitude": 5.8523
+  },
+  {
+    "id": 5,
+    "titre": "Fumées noires en zone urbaine",
+    "type": "Air",
+    "description": "Panache de fumée noire visible depuis le quartier, lié à un brûlage de déchets.",
+    "date": "2026-10-07",
+    "lieu": "Zone industrielle, Lyon",
+    "latitude": 45.7286,
+    "longitude": 4.8464
+  },
+  {
+    "id": 6,
+    "titre": "Mégots et canettes au bord du lac",
+    "type": "Plastique",
+    "description": "Nombreux mégots, canettes et emballages laissés après un week-end de forte fréquentation.",
+    "date": "2026-09-05",
+    "lieu": "Lac d'Annecy, Haute-Savoie",
+    "latitude": 45.8992,
+    "longitude": 6.1294,
+    "urlPhoto": "https://picsum.photos/seed/lac/800/500"
+  },
+  {
+    "id": 7,
+    "titre": "Bidons de produits non identifiés",
+    "type": "Chimique",
+    "description": "Plusieurs bidons ouverts abandonnés derrière un entrepôt désaffecté.",
+    "date": "2026-10-11",
+    "lieu": "Port de Bordeaux, Gironde",
+    "latitude": 44.8625,
+    "longitude": -0.5519
+  },
+  {
+    "id": 8,
+    "titre": "Pollution lumineuse d'un parking",
+    "type": "Autre",
+    "description": "Éclairage allumé toute la nuit, visible depuis les habitations voisines.",
+    "date": "2026-09-27",
+    "lieu": "Parking du centre commercial, Nantes",
+    "latitude": 47.2184,
+    "longitude": -1.5536
+  }
+]
