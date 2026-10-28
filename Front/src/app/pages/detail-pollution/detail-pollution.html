@@ -30,9 +30,9 @@
 
     <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
   </article>
-} @else if (introuvable()) {
+} @else if (messageErreur()) {
   <div class="panneau">
-    <p class="etat">Cette pollution est introuvable.</p>
+    <p class="etat">{{ messageErreur() }}</p>
   </div>
 } @else {
   <p class="etat">Chargement…</p>

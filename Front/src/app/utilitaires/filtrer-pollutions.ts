@@ -1,6 +1,7 @@
 import { Filtres } from '../modeles/filtres.modele';
 import { Pollution } from '../modeles/pollution.modele';
 
+// Enlève les accents et les majuscules : « Évry » et « evry » sont considérés comme égaux.
 const normaliser = (texte: string): string =>
   texte
     .normalize('NFD')

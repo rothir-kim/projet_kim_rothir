@@ -11,6 +11,7 @@ const ORIGINES = (process.env.ORIGINES_AUTORISEES ?? 'http://localhost:4200')
 const pollutions = JSON.parse(
   readFileSync(new URL('./pollutions.json', import.meta.url), 'utf-8')
 );
+// Le 0 évite un résultat faux (-Infinity) si la liste est vide.
 let prochainId = Math.max(0, ...pollutions.map((pollution) => pollution.id)) + 1;
 
 const estTexte = (valeur, longueurMax) =>
@@ -23,10 +24,12 @@ const estDateValide = (valeur) => {
   if (typeof valeur !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(valeur)) {
     return false;
   }
+  // Vérifie que la date existe vraiment (ex : refuse le 31 février).
   const date = new Date(`${valeur}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(valeur);
 };
 
+// On ajoute 14h pour accepter la date du jour, quel que soit le pays de l'utilisateur.
 const estDateNonFuture = (valeur) =>
   valeur <= new Date(Date.now() + 14 * 60 * 60 * 1000).toISOString().slice(0, 10);
 

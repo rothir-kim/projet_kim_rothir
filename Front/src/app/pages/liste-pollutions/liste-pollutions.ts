@@ -1,13 +1,19 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { catchError, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { CartePollution } from '../../composants/carte-pollution/carte-pollution';
 import { FiltresPollution } from '../../composants/filtres-pollution/filtres-pollution';
 import { FILTRES_VIDES, Filtres } from '../../modeles/filtres.modele';
 import { Pollution } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
 import { filtrerPollutions } from '../../utilitaires/filtrer-pollutions';
+import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
+
+type EtatListe =
+  | { statut: 'chargement' }
+  | { statut: 'erreur'; message: string }
+  | { statut: 'ok'; pollutions: Pollution[] };
 
 @Component({
   selector: 'app-liste-pollutions',
@@ -20,33 +26,34 @@ export class ListePollutions {
   private destroyRef = inject(DestroyRef);
   private rechargement = signal(0);
 
-  chargement = signal(true);
-  erreurChargement = signal('');
   erreurSuppression = signal('');
   filtres = signal<Filtres>({ ...FILTRES_VIDES });
 
-  pollutions = toSignal(
+  // Chaque fois que la liste se recharge, on affiche « Chargement… », puis la liste ou un message d'erreur.
+  etat = toSignal(
     toObservable(this.rechargement).pipe(
-      tap(() => {
-        this.chargement.set(true);
-        this.erreurChargement.set('');
-      }),
       switchMap(() =>
         this.servicePollution.lister().pipe(
-          catchError(() => {
-            this.erreurChargement.set(
-              'Impossible de charger les pollutions. Le serveur démarre peut-être : réessayez dans quelques secondes.',
-            );
-            return of<Pollution[]>([]);
-          }),
+          map((pollutions): EtatListe => ({ statut: 'ok', pollutions })),
+          catchError((erreur) =>
+            of<EtatListe>({ statut: 'erreur', message: messageErreurHttp(erreur) }),
+          ),
+          startWith<EtatListe>({ statut: 'chargement' }),
         ),
       ),
-      tap(() => this.chargement.set(false)),
     ),
-    { initialValue: [] as Pollution[] },
+    { initialValue: { statut: 'chargement' } as EtatListe },
   );
 
-  pollutionsFiltrees = computed(() => filtrerPollutions(this.pollutions(), this.filtres()));
+  messageErreur = computed(() => {
+    const etat = this.etat();
+    return etat.statut === 'erreur' ? etat.message : '';
+  });
+
+  pollutionsFiltrees = computed(() => {
+    const etat = this.etat();
+    return etat.statut === 'ok' ? filtrerPollutions(etat.pollutions, this.filtres()) : [];
+  });
 
   recharger(): void {
     this.rechargement.update((compteur) => compteur + 1);
@@ -59,7 +66,7 @@ export class ListePollutions {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => this.recharger(),
-        error: () => this.erreurSuppression.set('La suppression a échoué. Veuillez réessayer.'),
+        error: (erreur) => this.erreurSuppression.set(messageErreurHttp(erreur)),
       });
   }
 }

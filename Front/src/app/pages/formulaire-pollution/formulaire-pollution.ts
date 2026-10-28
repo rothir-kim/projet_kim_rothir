@@ -10,8 +10,11 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
-import { urlPhotoValide } from '../../validateurs/url-photo.validateur';
+import { lireId } from '../../utilitaires/lire-id';
+import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
+import { nonVide } from '../../validateurs/non-vide.validateur';
+import { urlPhotoValide } from '../../validateurs/url-photo.validateur';
 
 @Component({
   selector: 'app-formulaire-pollution',
@@ -23,22 +26,28 @@ export class FormulairePollution {
   private servicePollution = inject(PollutionService);
   private routeur = inject(Router);
   private destroyRef = inject(DestroyRef);
+  // Le snapshot suffit : « nouvelle » et « modifier » sont deux routes différentes,
+  // donc le composant est recréé à chaque fois.
   private idParametre = inject(ActivatedRoute).snapshot.paramMap.get('id');
 
   readonly types = TYPES_POLLUTION;
   readonly dateMax = dateDuJour();
-  readonly id = this.idParametre === null ? null : Number(this.idParametre);
-  readonly modeEdition = this.id !== null;
+  readonly modeEdition = this.idParametre !== null;
+  readonly id = lireId(this.idParametre);
 
   envoiEnCours = signal(false);
   erreur = signal('');
+  introuvable = signal(false);
 
   formulaire = new FormGroup({
-    titre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    titre: new FormControl('', { nonNullable: true, validators: [nonVide] }),
     type: new FormControl<TypePollution | null>(null, [Validators.required]),
-    description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    date: new FormControl('', { nonNullable: true, validators: [Validators.required, dateNonFuture] }),
-    lieu: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    description: new FormControl('', { nonNullable: true, validators: [nonVide] }),
+    date: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, dateNonFuture],
+    }),
+    lieu: new FormControl('', { nonNullable: true, validators: [nonVide] }),
     latitude: new FormControl<number | null>(null, [
       Validators.required,
       Validators.min(-90),
@@ -53,16 +62,26 @@ export class FormulairePollution {
   });
 
   constructor() {
-    if (this.id !== null) {
-      this.servicePollution
-        .obtenir(this.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (pollution) =>
-            this.formulaire.patchValue({ ...pollution, urlPhoto: pollution.urlPhoto ?? '' }),
-          error: () => this.erreur.set('Cette pollution est introuvable.'),
-        });
+    if (!this.modeEdition) {
+      return;
     }
+    if (this.id === null) {
+      // Id invalide dans l'URL (ex : /pollutions/abc/modifier).
+      this.introuvable.set(true);
+      this.erreur.set('Cette pollution est introuvable.');
+      return;
+    }
+    this.servicePollution
+      .obtenir(this.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (pollution) =>
+          this.formulaire.patchValue({ ...pollution, urlPhoto: pollution.urlPhoto ?? '' }),
+        error: (erreur) => {
+          this.introuvable.set(true);
+          this.erreur.set(messageErreurHttp(erreur));
+        },
+      });
   }
 
   invalide(controle: AbstractControl): boolean {
@@ -74,14 +93,18 @@ export class FormulairePollution {
       this.formulaire.markAllAsTouched();
       return;
     }
-    const { type, latitude, longitude, urlPhoto, ...reste } = this.formulaire.getRawValue();
+    const { titre, type, description, date, lieu, latitude, longitude, urlPhoto } =
+      this.formulaire.getRawValue();
     if (type === null || latitude === null || longitude === null) {
       return;
     }
     const urlPhotoNettoyee = urlPhoto.trim();
     const saisie: PollutionSaisie = {
-      ...reste,
+      titre: titre.trim(),
       type,
+      description: description.trim(),
+      date,
+      lieu: lieu.trim(),
       latitude,
       longitude,
       ...(urlPhotoNettoyee ? { urlPhoto: urlPhotoNettoyee } : {}),
@@ -95,9 +118,9 @@ export class FormulairePollution {
     this.envoiEnCours.set(true);
     requete.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => this.routeur.navigate(['/pollutions']),
-      error: () => {
+      error: (erreur) => {
         this.envoiEnCours.set(false);
-        this.erreur.set("L'enregistrement a échoué. Veuillez réessayer.");
+        this.erreur.set(messageErreurHttp(erreur));
       },
     });
   }

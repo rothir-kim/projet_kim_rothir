@@ -1,5 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+// Date du jour à l'heure de l'utilisateur (toISOString() donnerait la date en UTC).
 export function dateDuJour(): string {
   const maintenant = new Date();
   const mois = String(maintenant.getMonth() + 1).padStart(2, '0');
