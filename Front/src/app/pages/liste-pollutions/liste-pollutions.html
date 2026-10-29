@@ -1,0 +1,37 @@
+<section>
+  <div class="page-entete">
+    <div>
+      <h1>Pollutions recensées</h1>
+      <p class="page-entete__soustitre">Consultez, filtrez et gérez les pollutions observées sur le terrain.</p>
+    </div>
+    <a class="bouton bouton--principal" routerLink="/pollutions/nouvelle">Nouvelle pollution</a>
+  </div>
+
+  <app-filtres-pollution [filtres]="filtres()" (filtresChange)="filtres.set($event)" />
+
+  @if (erreurSuppression()) {
+    <div class="alerte" role="alert">{{ erreurSuppression() }}</div>
+  }
+
+  @switch (etat().statut) {
+    @case ('chargement') {
+      <p class="etat">Chargement des pollutions…</p>
+    }
+    @case ('erreur') {
+      <div class="alerte" role="alert">
+        <span>{{ messageErreur() }}</span>
+        <button type="button" class="bouton" (click)="recharger()">Réessayer</button>
+      </div>
+    }
+    @case ('ok') {
+      <p class="compteur">{{ pollutionsFiltrees().length }} résultat{{ pollutionsFiltrees().length > 1 ? 's' : '' }}</p>
+      <div class="grille">
+        @for (pollution of pollutionsFiltrees(); track pollution.id) {
+          <app-carte-pollution [pollution]="pollution" (suppressionConfirmee)="supprimer($event)" />
+        } @empty {
+          <p class="etat grille__vide">Aucune pollution ne correspond à votre recherche.</p>
+        }
+      </div>
+    }
+  }
+</section>

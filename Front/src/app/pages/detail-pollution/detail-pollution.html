@@ -1,0 +1,39 @@
+<a class="lien-retour" routerLink="/pollutions">← Retour à la liste</a>
+
+@if (pollution(); as fiche) {
+  <article class="panneau">
+    <header class="detail__entete">
+      <span class="badge" [attr.data-type]="fiche.type">{{ fiche.type }}</span>
+      <h1>{{ fiche.titre }}</h1>
+    </header>
+
+    @if (fiche.urlPhoto; as urlPhoto) {
+      <img class="detail__photo" [src]="urlPhoto" [alt]="'Photo : ' + fiche.titre" />
+    }
+
+    <p class="detail__description">{{ fiche.description }}</p>
+
+    <dl class="detail__infos">
+      <div>
+        <dt>Date d'observation</dt>
+        <dd>{{ fiche.date | date: 'dd/MM/yyyy' }}</dd>
+      </div>
+      <div>
+        <dt>Lieu</dt>
+        <dd>{{ fiche.lieu }}</dd>
+      </div>
+      <div>
+        <dt>Coordonnées GPS</dt>
+        <dd>{{ fiche.latitude }}, {{ fiche.longitude }}</dd>
+      </div>
+    </dl>
+
+    <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
+  </article>
+} @else if (messageErreur()) {
+  <div class="panneau">
+    <p class="etat">{{ messageErreur() }}</p>
+  </div>
+} @else {
+  <p class="etat">Chargement…</p>
+}

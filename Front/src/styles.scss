@@ -1,0 +1,231 @@
+:root {
+  --fond: #f7eedf;
+  --surface: #ffffff;
+  --bordure: #ccd7cd;
+  --principal: #425445;
+  --principal-fonce: #2f3d32;
+  --texte-doux: #5e6a5c;
+  --accent: #9a5a24;
+  --accent-clair: #c57f42;
+  --danger-fond: #d19b7b;
+  --danger-texte: #3a2a1e;
+  --erreur: #9b3d2e;
+  --halo: #99ab77;
+  --rayon: 12px;
+  --police: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --police-titre: ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--principal);
+  font-family: var(--police);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--police-titre);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+a {
+  color: var(--accent);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--principal);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+
+  &:hover {
+    border-color: var(--principal);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--halo);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.bouton--principal {
+  background: var(--principal);
+  border-color: var(--principal);
+  color: #ffffff;
+
+  &:hover {
+    background: var(--principal-fonce);
+    border-color: var(--principal-fonce);
+  }
+}
+
+.bouton--danger {
+  background: var(--danger-fond);
+  border-color: var(--danger-fond);
+  color: var(--danger-texte);
+
+  &:hover {
+    border-color: var(--danger-texte);
+  }
+}
+
+.bouton--discret {
+  background: transparent;
+  border-color: transparent;
+
+  &:hover {
+    background: rgba(66, 84, 69, 0.08);
+    border-color: transparent;
+  }
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    background: #ffffff;
+    color: var(--principal);
+    font: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--principal);
+      box-shadow: 0 0 0 3px rgba(153, 171, 119, 0.45);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: var(--erreur);
+    }
+  }
+
+  textarea {
+    min-height: 7rem;
+    resize: vertical;
+  }
+}
+
+.champ__erreur {
+  color: var(--erreur);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: #e0ddd0;
+  color: #2f3d32;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  &[data-type='Eau'] {
+    background: #c6d2ce;
+  }
+
+  &[data-type='Plastique'] {
+    background: #e4d4ac;
+  }
+
+  &[data-type='Chimique'] {
+    background: #c8d3bb;
+  }
+
+  &[data-type='Dépôt sauvage'] {
+    background: #e7cec2;
+  }
+
+  &[data-type='Air'] {
+    background: #d8e8dc;
+  }
+}
+
+.panneau {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(66, 84, 69, 0.06);
+
+  @media (max-width: 560px) {
+    padding: 1.25rem;
+  }
+}
+
+.alerte {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--danger-fond);
+  border-radius: 10px;
+  background: #fbeee8;
+  color: var(--erreur);
+}
+
+.etat {
+  padding: 2rem 0;
+  color: var(--texte-doux);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

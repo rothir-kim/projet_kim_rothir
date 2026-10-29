@@ -1,0 +1,65 @@
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--bordure);
+}
+
+.entete__contenu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+}
+
+.entete__marque {
+  color: var(--principal);
+  font-family: var(--police-titre);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent-clair);
+  }
+}
+
+.entete__navigation {
+  display: flex;
+  gap: 0.25rem;
+
+  a {
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    color: var(--texte-doux);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba(66, 84, 69, 0.08);
+      color: var(--principal);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--halo);
+      outline-offset: 2px;
+    }
+
+    &.actif {
+      background: var(--principal);
+      color: #ffffff;
+    }
+  }
+}

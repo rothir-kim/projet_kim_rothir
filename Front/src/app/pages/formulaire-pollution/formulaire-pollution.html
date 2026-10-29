@@ -1,0 +1,94 @@
+<section class="panneau">
+  <h1>{{ modeEdition ? 'Modifier la pollution' : 'Déclarer une pollution' }}</h1>
+  <p class="formulaire__intro">Les champs marqués d'un astérisque sont obligatoires.</p>
+
+  @if (erreur()) {
+    <div class="alerte" role="alert">{{ erreur() }}</div>
+  }
+
+  @if (introuvable()) {
+    <a class="bouton bouton--discret" routerLink="/pollutions">← Retour à la liste</a>
+  } @else {
+    <form [formGroup]="formulaire" (ngSubmit)="enregistrer()" novalidate>
+      <div class="formulaire__grille">
+        <div class="champ">
+          <label for="titre">Titre *</label>
+          <input id="titre" type="text" formControlName="titre" maxlength="120" placeholder="Ex : Décharge sauvage en forêt" />
+          @if (invalide(formulaire.controls.titre)) {
+            <span class="champ__erreur">Le titre est requis.</span>
+          }
+        </div>
+
+        <div class="champ">
+          <label for="type">Type de pollution *</label>
+          <select id="type" formControlName="type">
+            <option [ngValue]="null" disabled>Sélectionnez un type</option>
+            @for (type of types; track type) {
+              <option [ngValue]="type">{{ type }}</option>
+            }
+          </select>
+          @if (invalide(formulaire.controls.type)) {
+            <span class="champ__erreur">Le type de pollution est requis.</span>
+          }
+        </div>
+
+        <div class="champ">
+          <label for="date">Date de l'observation *</label>
+          <input id="date" type="date" formControlName="date" [max]="dateMax" />
+          @if (invalide(formulaire.controls.date)) {
+            <span class="champ__erreur">
+              {{ formulaire.controls.date.hasError('dateFuture') ? 'La date ne peut pas être dans le futur.' : 'La date est requise.' }}
+            </span>
+          }
+        </div>
+
+        <div class="champ">
+          <label for="lieu">Lieu *</label>
+          <input id="lieu" type="text" formControlName="lieu" maxlength="200" placeholder="Ex : Parc de la Citadelle, Lille" />
+          @if (invalide(formulaire.controls.lieu)) {
+            <span class="champ__erreur">Le lieu est requis.</span>
+          }
+        </div>
+
+        <div class="champ">
+          <label for="latitude">Latitude *</label>
+          <input id="latitude" type="number" step="any" formControlName="latitude" placeholder="Ex : 50.6292" />
+          @if (invalide(formulaire.controls.latitude)) {
+            <span class="champ__erreur">Saisissez une latitude valide, entre -90 et 90.</span>
+          }
+        </div>
+
+        <div class="champ">
+          <label for="longitude">Longitude *</label>
+          <input id="longitude" type="number" step="any" formControlName="longitude" placeholder="Ex : 3.0573" />
+          @if (invalide(formulaire.controls.longitude)) {
+            <span class="champ__erreur">Saisissez une longitude valide, entre -180 et 180.</span>
+          }
+        </div>
+
+        <div class="champ formulaire__pleine">
+          <label for="description">Description *</label>
+          <textarea id="description" formControlName="description" maxlength="2000" rows="4" placeholder="Décrivez ce que vous avez observé…"></textarea>
+          @if (invalide(formulaire.controls.description)) {
+            <span class="champ__erreur">La description est requise.</span>
+          }
+        </div>
+
+        <div class="champ formulaire__pleine">
+          <label for="urlPhoto">Photo (URL, facultatif)</label>
+          <input id="urlPhoto" type="text" formControlName="urlPhoto" maxlength="500" placeholder="https://exemple.fr/photo.jpg" />
+          @if (invalide(formulaire.controls.urlPhoto)) {
+            <span class="champ__erreur">Saisissez une URL valide commençant par http:// ou https://.</span>
+          }
+        </div>
+      </div>
+
+      <div class="formulaire__actions">
+        <a class="bouton bouton--discret" routerLink="/pollutions">Annuler</a>
+        <button type="submit" class="bouton bouton--principal" [disabled]="envoiEnCours()">
+          {{ modeEdition ? 'Enregistrer' : 'Déclarer' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

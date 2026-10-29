@@ -1,0 +1,21 @@
+<article class="carte">
+  @if (pollution().urlPhoto; as urlPhoto) {
+    <img class="carte__photo" [src]="urlPhoto" [alt]="'Photo : ' + pollution().titre" loading="lazy" />
+  }
+  <div class="carte__corps">
+    <span class="badge" [attr.data-type]="pollution().type">{{ pollution().type }}</span>
+    <h2 class="carte__titre">{{ pollution().titre }}</h2>
+    <p class="carte__meta">{{ pollution().lieu }} · {{ pollution().date | date: 'dd/MM/yyyy' }}</p>
+  </div>
+  <div class="carte__actions">
+    @if (confirmationEnCours()) {
+      <span class="carte__question">Supprimer cette pollution ?</span>
+      <button type="button" class="bouton bouton--danger" (click)="confirmer()">Confirmer</button>
+      <button type="button" class="bouton bouton--discret" (click)="annuler()">Annuler</button>
+    } @else {
+      <a class="bouton" [routerLink]="['/pollutions', pollution().id]">Voir</a>
+      <a class="bouton bouton--discret" [routerLink]="['/pollutions', pollution().id, 'modifier']">Modifier</a>
+      <button type="button" class="bouton bouton--danger" (click)="demanderConfirmation()">Supprimer</button>
+    }
+  </div>
+</article>

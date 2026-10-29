@@ -1,0 +1,29 @@
+.page-entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-entete__soustitre {
+  margin: 0.4rem 0 0;
+  color: var(--texte-doux);
+}
+
+.compteur {
+  margin: 0 0 1rem;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.grille__vide {
+  grid-column: 1 / -1;
+}
