@@ -87,7 +87,20 @@
 
       <div class="champ formulaire__pleine">
         <label for="adresse">Adresse *</label>
-        <input id="adresse" type="text" formControlName="adresse" maxlength="255" autocomplete="street-address" />
+        <input
+          id="adresse"
+          type="text"
+          formControlName="adresse"
+          maxlength="255"
+          list="suggestions-adresse"
+          autocomplete="off"
+          placeholder="Commencez à taper, puis choisissez dans la liste"
+        />
+        <datalist id="suggestions-adresse">
+          @for (suggestion of suggestionsAdresse(); track $index) {
+            <option [value]="suggestion"></option>
+          }
+        </datalist>
         @if (invalide(formulaire.controls.adresse)) {
           <span class="champ__erreur">L'adresse est requise.</span>
         }

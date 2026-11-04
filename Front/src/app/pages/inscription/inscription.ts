@@ -2,8 +2,10 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 import { IconeOeil } from '../../composants/icone-oeil/icone-oeil';
 import { UserSaisie } from '../../modeles/user.modele';
+import { AdresseService } from '../../services/adresse-service';
 import { UserService } from '../../services/user-service';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
@@ -23,6 +25,7 @@ import { formaterTelephone, telephoneValide } from '../../validateurs/telephone.
 })
 export class Inscription {
   private serviceUser = inject(UserService);
+  private serviceAdresse = inject(AdresseService);
   private routeur = inject(Router);
   private destroyRef = inject(DestroyRef);
 
@@ -64,6 +67,17 @@ export class Inscription {
       libelle: critere.libelle,
       respecte: critere.test(this.motDePasse()),
     })),
+  );
+
+  // On attend une pause de 300 ms dans la frappe avant de chercher
+  suggestionsAdresse = toSignal(
+    this.formulaire.controls.adresse.valueChanges.pipe(
+      debounceTime(300),
+      map((texte) => texte.trim()),
+      distinctUntilChanged(),
+      switchMap((texte) => (texte.length < 3 ? of<string[]>([]) : this.serviceAdresse.suggerer(texte))),
+    ),
+    { initialValue: [] as string[] },
   );
 
   invalide(controle: AbstractControl): boolean {
