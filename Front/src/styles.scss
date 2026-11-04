@@ -1,22 +1,23 @@
 :root {
-  // Palette « Forêt & orange » : toutes les couleurs du site sont ici
-  --fond: #f2efe6;
-  --fond-entete: rgba(242, 239, 230, 0.92);
-  --fond-doux: #e6e1d3;
-  --surface: #fbfaf5;
+  // Palette « Océan » : toutes les couleurs du site sont ici
+  --fond: #eef3f2;
+  --fond-entete: rgba(238, 243, 242, 0.92);
+  --fond-doux: #dde7e6;
+  --surface: #f9fbfb;
   --champ: #ffffff;
-  --bordure: #d9d4c4;
-  --principal: #17332a;
-  --principal-fonce: #0e221b;
-  --texte-doux: #5b6a61;
+  --bordure: #cddbdb;
+  --principal: #0f2a3d;
+  --principal-fonce: #081c2a;
+  --texte-doux: #4f6470;
   --sur-couleur: #ffffff;
-  --accent: #d2461f;
-  --accent-fonce: #a8341a;
+  --accent: #1f6f8b;
+  --accent-fonce: #164f63;
+  --accent-clair: #6cc3d5;
   --erreur: #b3261e;
-  --alerte-fond: #fbe9e1;
-  --survol: rgba(23, 51, 42, 0.08);
-  --ligne-survol: #f5efe2;
-  --halo: rgba(210, 70, 31, 0.3);
+  --alerte-fond: #fbe9e6;
+  --survol: rgba(15, 42, 61, 0.08);
+  --ligne-survol: #e6f0f1;
+  --halo: rgba(31, 111, 139, 0.3);
   --rayon: 6px;
   --rayon-grand: 10px;
   --police: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -126,12 +127,13 @@ img {
   }
 }
 
+// Les actions dangereuses restent rouges, quelle que soit la palette
 .bouton--danger {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--erreur);
+  color: var(--erreur);
 
   &:hover {
-    background: var(--accent);
+    background: var(--erreur);
     color: var(--sur-couleur);
   }
 }
@@ -252,7 +254,7 @@ img {
   gap: 1rem;
   margin-bottom: 1.25rem;
   padding: 0.85rem 1rem;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--erreur);
   border-left-width: 4px;
   border-radius: var(--rayon);
   background: var(--alerte-fond);
