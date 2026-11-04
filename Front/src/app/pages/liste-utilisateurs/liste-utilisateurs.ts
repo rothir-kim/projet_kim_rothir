@@ -50,7 +50,13 @@ export class ListeUtilisateurs {
       .supprimer(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => this.charger(),
+        next: () => {
+          // Si on supprime son propre compte, on est déconnecté
+          if (this.serviceUser.utilisateurConnecte()?.id === id) {
+            this.serviceUser.deconnecter();
+          }
+          this.charger();
+        },
         error: (erreur) => this.erreur.set(messageErreurHttp(erreur)),
       });
   }

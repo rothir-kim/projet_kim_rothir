@@ -37,15 +37,22 @@
 
 .entete__navigation {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.25rem;
 
-  a {
+  a,
+  button {
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
     color: var(--texte-doux);
     font-size: 0.92rem;
     font-weight: 600;
     text-decoration: none;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    cursor: pointer;
 
     &:hover {
       background: rgba(66, 84, 69, 0.08);
@@ -62,4 +69,11 @@
       color: #ffffff;
     }
   }
+}
+
+.entete__utilisateur {
+  padding: 0 0.5rem 0 1rem;
+  color: var(--principal);
+  font-size: 0.92rem;
+  font-weight: 700;
 }

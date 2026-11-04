@@ -5,7 +5,13 @@
       <a routerLink="/pollutions" routerLinkActive="actif" [routerLinkActiveOptions]="{ exact: true }">Pollutions</a>
       <a routerLink="/pollutions/nouvelle" routerLinkActive="actif">Nouvelle pollution</a>
       <a routerLink="/utilisateurs" routerLinkActive="actif">Utilisateurs</a>
-      <a routerLink="/inscription" routerLinkActive="actif">Inscription</a>
+      @if (utilisateurConnecte(); as utilisateur) {
+        <span class="entete__utilisateur">Bonjour {{ utilisateur.prenom }}</span>
+        <button type="button" (click)="seDeconnecter()">Se déconnecter</button>
+      } @else {
+        <a routerLink="/connexion" routerLinkActive="actif">Connexion</a>
+        <a routerLink="/inscription" routerLinkActive="actif">Inscription</a>
+      }
     </nav>
   </div>
 </header>

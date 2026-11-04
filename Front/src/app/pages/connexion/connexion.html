@@ -1,0 +1,47 @@
+<section class="panneau connexion">
+  <h1>Connexion</h1>
+  <p class="connexion__intro">
+    Pas encore de compte ? <a routerLink="/inscription">Créez-en un</a>.
+  </p>
+
+  @if (erreur()) {
+    <div class="alerte" role="alert">{{ erreur() }}</div>
+  }
+
+  <form [formGroup]="formulaire" (ngSubmit)="seConnecter()" novalidate>
+    <div class="champ">
+      <label for="login">Login</label>
+      <input id="login" type="text" formControlName="login" autocomplete="username" />
+      @if (invalide(formulaire.controls.login)) {
+        <span class="champ__erreur">Le login est requis.</span>
+      }
+    </div>
+
+    <div class="champ">
+      <label for="motDePasse">Mot de passe</label>
+      <div class="champ__mot-de-passe">
+        <input
+          id="motDePasse"
+          [type]="motDePasseVisible() ? 'text' : 'password'"
+          formControlName="motDePasse"
+          autocomplete="current-password"
+        />
+        <button
+          type="button"
+          class="bouton-oeil"
+          (click)="motDePasseVisible.set(!motDePasseVisible())"
+          [attr.aria-label]="motDePasseVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+        >
+          <app-icone-oeil [barre]="motDePasseVisible()" />
+        </button>
+      </div>
+      @if (invalide(formulaire.controls.motDePasse)) {
+        <span class="champ__erreur">Le mot de passe est requis.</span>
+      }
+    </div>
+
+    <button type="submit" class="bouton bouton--principal connexion__bouton" [disabled]="envoiEnCours()">
+      Se connecter
+    </button>
+  </form>
+</section>

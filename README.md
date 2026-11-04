@@ -117,6 +117,18 @@ ng serve
 
 L'application est disponible sur `http://localhost:4200`.
 
+### Pages
+
+| Adresse | Rôle |
+|---|---|
+| `/pollutions` | Liste des pollutions, avec filtres |
+| `/pollutions/nouvelle` | Déclarer une pollution |
+| `/pollutions/:id` | Détail d'une pollution |
+| `/pollutions/:id/modifier` | Modifier une pollution |
+| `/utilisateurs` | Liste des utilisateurs |
+| `/inscription` | Créer un compte (critères du mot de passe, adresse proposée par le service de l'IGN) |
+| `/connexion` | Se connecter (connexion fictive, l'utilisateur est gardé dans le navigateur) |
+
 L'URL de l'API dépend de l'environnement (remplacement configuré par `fileReplacements` dans `angular.json`) :
 
 - développement (`ng serve`) : `src/environments/environment.development.ts` → `http://localhost:3000/api`
