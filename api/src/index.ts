@@ -6,6 +6,7 @@ import { ORIGINES, PORT } from "./config";
 import { sequelize } from "./models";
 import { Pollution } from "./models/pollution.model";
 import pollutionRoutes from "./routes/pollution.routes";
+import userRoutes from "./routes/user.routes";
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 
 app.use("/api/pollutions", pollutionRoutes);
+app.use("/api/users", userRoutes);
 
 sequelize
   .authenticate()

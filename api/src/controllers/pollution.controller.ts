@@ -1,20 +1,11 @@
 import { Request, Response } from "express";
-import { ValidationError } from "sequelize";
 import { Pollution, PollutionCreation } from "../models/pollution.model";
+import { repondreErreur } from "./erreur";
 
 // On garde seulement les champs attendus (jamais l'id envoyé par le client)
 const lireSaisie = (req: Request): PollutionCreation => {
   const { titre, type, description, date, lieu, latitude, longitude, urlPhoto } = req.body ?? {};
   return { titre, type, description, date, lieu, latitude, longitude, urlPhoto: urlPhoto || null };
-};
-
-const repondreErreur = (res: Response, erreur: unknown) => {
-  if (erreur instanceof ValidationError) {
-    const details = erreur.errors.map((e) => e.message);
-    res.status(400).json({ message: "Données invalides", details });
-    return;
-  }
-  res.status(500).json({ message: "Erreur serveur" });
 };
 
 export const getAll = async (_req: Request, res: Response) => {

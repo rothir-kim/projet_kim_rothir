@@ -32,7 +32,7 @@ Puis lancer :
 npm run dev
 ```
 
-Au premier lancement, la table `pollution` est créée automatiquement et remplie avec les données de `api/pollutions.json`.
+Au premier lancement, les tables `pollution` et `utilisateur` sont créées automatiquement, et la table `pollution` est remplie avec les données de `api/pollutions.json`.
 
 L'API écoute sur `http://localhost:3000`.
 
@@ -63,8 +63,28 @@ L'API écoute sur `http://localhost:3000`.
 | PUT | `/api/pollutions/:id` | Modifie une pollution |
 | DELETE | `/api/pollutions/:id` | Supprime une pollution (réponse `204`) |
 
-En cas de données invalides (champ vide, type inconnu, latitude hors limites…), l'API répond `400`.
-Si la pollution n'existe pas, elle répond `404`.
+| GET | `/api/users` | Liste des utilisateurs (sans les mots de passe) |
+| POST | `/api/users` | Crée un utilisateur (réponse `201`) |
+| POST | `/api/users/login` | Connexion fictive : vérifie le login et le mot de passe |
+| DELETE | `/api/users/:id` | Supprime un utilisateur (réponse `204`) |
+
+Codes d'erreur :
+
+| Code | Signification |
+|---|---|
+| `400` | Données invalides (champ vide, type inconnu, email invalide, mot de passe trop faible…) |
+| `401` | Login ou mot de passe incorrect |
+| `404` | Pollution ou utilisateur introuvable |
+| `409` | Login ou email déjà utilisé |
+
+### Utilisateurs et mots de passe
+
+Un utilisateur a les champs : `login`, `motDePasse`, `nom`, `prenom`, `adresse`, `email`, `telephone`, `dateNaissance` (AAAA-MM-JJ).
+
+Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
+Il est enregistré haché avec `bcryptjs` (jamais en clair) et n'est jamais renvoyé par l'API.
+
+La connexion est « fictive » : l'API vérifie le login et le mot de passe, puis renvoie l'utilisateur, sans jeton de sécurité.
 
 ### Organisation du code (`api/src/`)
 
@@ -74,11 +94,15 @@ src/
 ├── config.ts                        lecture des variables d'environnement
 ├── models/
 │   ├── index.ts                     connexion à la base (Sequelize)
-│   └── pollution.model.ts           description de la table pollution
+│   ├── pollution.model.ts           description de la table pollution
+│   └── user.model.ts                description de la table utilisateur
 ├── controllers/
-│   └── pollution.controller.ts      ce que fait chaque route
+│   ├── erreur.ts                    réponses d'erreur communes (400, 409, 500)
+│   ├── pollution.controller.ts      ce que fait chaque route des pollutions
+│   └── user.controller.ts           ce que fait chaque route des utilisateurs
 └── routes/
-    └── pollution.routes.ts          les adresses de l'API
+    ├── pollution.routes.ts          les adresses /api/pollutions
+    └── user.routes.ts               les adresses /api/users
 ```
 
 ## Lancer le front
