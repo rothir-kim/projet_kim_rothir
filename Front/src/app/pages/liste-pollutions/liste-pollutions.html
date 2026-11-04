@@ -4,7 +4,11 @@
       <h1>Pollutions recensées</h1>
       <p class="page-entete__soustitre">Consultez, filtrez et gérez les pollutions observées sur le terrain.</p>
     </div>
-    <a class="bouton bouton--principal" routerLink="/pollutions/nouvelle">Nouvelle pollution</a>
+    @if (utilisateurConnecte()) {
+      <a class="bouton bouton--principal" routerLink="/pollutions/nouvelle">Nouvelle pollution</a>
+    } @else {
+      <a class="bouton" routerLink="/connexion">Se connecter pour déclarer une pollution</a>
+    }
   </div>
 
   <app-filtres-pollution [filtres]="filtres()" (filtresChange)="filtres.set($event)" />

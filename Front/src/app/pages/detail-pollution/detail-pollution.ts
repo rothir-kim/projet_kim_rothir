@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { Pollution } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
+import { UserService } from '../../services/user-service';
 import { lireId } from '../../utilitaires/lire-id';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 
@@ -22,6 +23,8 @@ type EtatDetail =
 export class DetailPollution {
   private servicePollution = inject(PollutionService);
   private route = inject(ActivatedRoute);
+
+  utilisateurConnecte = inject(UserService).utilisateurConnecte;
 
   // paramMap (et pas snapshot) : la fiche se met à jour si l'id change dans l'URL.
   etat = toSignal(

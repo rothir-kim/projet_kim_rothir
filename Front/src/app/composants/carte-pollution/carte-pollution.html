@@ -14,8 +14,10 @@
       <button type="button" class="bouton bouton--discret" (click)="annuler()">Annuler</button>
     } @else {
       <a class="bouton" [routerLink]="['/pollutions', pollution().id]">Voir</a>
-      <a class="bouton bouton--discret" [routerLink]="['/pollutions', pollution().id, 'modifier']">Modifier</a>
-      <button type="button" class="bouton bouton--danger" (click)="demanderConfirmation()">Supprimer</button>
+      @if (utilisateurConnecte()) {
+        <a class="bouton bouton--discret" [routerLink]="['/pollutions', pollution().id, 'modifier']">Modifier</a>
+        <button type="button" class="bouton bouton--danger" (click)="demanderConfirmation()">Supprimer</button>
+      }
     }
   </div>
 </article>

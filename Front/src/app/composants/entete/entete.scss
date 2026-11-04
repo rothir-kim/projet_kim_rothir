@@ -10,8 +10,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 1rem 1.5rem;
   max-width: 1120px;
   margin: 0 auto;
   padding: 0.85rem 1.25rem;
@@ -37,22 +36,17 @@
 
 .entete__navigation {
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
-  align-items: center;
   gap: 0.25rem;
 
-  a,
-  button {
+  a {
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
     color: var(--texte-doux);
     font-size: 0.92rem;
     font-weight: 600;
     text-decoration: none;
-    border: none;
-    background: transparent;
-    font-family: inherit;
-    cursor: pointer;
 
     &:hover {
       background: rgba(66, 84, 69, 0.08);
@@ -71,8 +65,21 @@
   }
 }
 
+// Zone du compte, séparée des pages par un trait
+.entete__compte {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--bordure);
+
+  @media (max-width: 640px) {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
 .entete__utilisateur {
-  padding: 0 0.5rem 0 1rem;
   color: var(--principal);
   font-size: 0.92rem;
   font-weight: 700;

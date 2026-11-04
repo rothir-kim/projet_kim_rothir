@@ -28,7 +28,9 @@
       </div>
     </dl>
 
-    <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
+    @if (utilisateurConnecte()) {
+      <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
+    }
   </article>
 } @else if (messageErreur()) {
   <div class="panneau">

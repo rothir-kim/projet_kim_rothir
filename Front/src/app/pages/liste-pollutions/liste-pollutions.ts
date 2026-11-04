@@ -7,6 +7,7 @@ import { FiltresPollution } from '../../composants/filtres-pollution/filtres-pol
 import { FILTRES_VIDES, Filtres } from '../../modeles/filtres.modele';
 import { Pollution } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
+import { UserService } from '../../services/user-service';
 import { filtrerPollutions } from '../../utilitaires/filtrer-pollutions';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 
@@ -25,6 +26,8 @@ export class ListePollutions {
   private servicePollution = inject(PollutionService);
   private destroyRef = inject(DestroyRef);
   private rechargement = signal(0);
+
+  utilisateurConnecte = inject(UserService).utilisateurConnecte;
 
   erreurSuppression = signal('');
   filtres = signal<Filtres>({ ...FILTRES_VIDES });

@@ -122,12 +122,15 @@ L'application est disponible sur `http://localhost:4200`.
 | Adresse | Rôle |
 |---|---|
 | `/pollutions` | Liste des pollutions, avec filtres |
-| `/pollutions/nouvelle` | Déclarer une pollution |
+| `/pollutions/nouvelle` | Déclarer une pollution (connexion requise) |
 | `/pollutions/:id` | Détail d'une pollution |
-| `/pollutions/:id/modifier` | Modifier une pollution |
-| `/utilisateurs` | Liste des utilisateurs |
+| `/pollutions/:id/modifier` | Modifier une pollution (connexion requise) |
+| `/utilisateurs` | Liste des utilisateurs (connexion requise) |
 | `/inscription` | Créer un compte (critères du mot de passe, adresse proposée par le service de l'IGN) |
 | `/connexion` | Se connecter (connexion fictive, l'utilisateur est gardé dans le navigateur) |
+
+Sans connexion, on peut seulement consulter les pollutions. Les pages marquées « connexion requise » sont protégées par `connexionGuard` (`src/app/guards/connexion.guard.ts`), qui renvoie vers `/connexion`.
+Cette protection ne concerne que l'affichage : l'API, elle, ne vérifie pas qui envoie les requêtes (connexion fictive).
 
 L'URL de l'API dépend de l'environnement (remplacement configuré par `fileReplacements` dans `angular.json`) :
 
