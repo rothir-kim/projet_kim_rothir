@@ -1,3 +1,24 @@
+// Petits mots rouges qui apparaissent un par un au-dessus du titre
+.accroche {
+  display: flex;
+  justify-content: space-between;
+  max-width: 720px;
+  margin: 1rem 0 0.75rem;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  span {
+    animation: monter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.12}s;
+      }
+    }
+  }
+}
+
 .page-entete {
   display: flex;
   flex-wrap: wrap;
@@ -5,11 +26,53 @@
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--accent);
 }
 
 .page-entete__soustitre {
-  margin: 0.4rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--texte-doux);
+  font-size: 1.05rem;
+}
+
+// Bandeau qui défile en continu avec les types de pollution
+.defile {
+  overflow: hidden;
+  margin: 0 0 1.75rem;
+  padding: 0.6rem 0;
+  border-radius: var(--rayon);
+  background: var(--principal);
+}
+
+.defile__piste {
+  display: flex;
+  width: max-content;
+  animation: defiler 22s linear infinite;
+
+  span {
+    padding: 0 1.25rem;
+    color: var(--fond);
+    font-family: var(--police-titre);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+
+    &::after {
+      content: '✺';
+      margin-left: 2.5rem;
+      color: var(--accent);
+    }
+  }
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes defiler {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .compteur {

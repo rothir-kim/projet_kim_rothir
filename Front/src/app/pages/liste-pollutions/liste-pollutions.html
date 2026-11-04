@@ -1,4 +1,11 @@
 <section>
+  <p class="accroche" aria-hidden="true">
+    <span>observer</span>
+    <span>signaler</span>
+    <span>protéger</span>
+    <span>agir</span>
+  </p>
+
   <div class="page-entete">
     <div>
       <h1>Pollutions recensées</h1>
@@ -9,6 +16,16 @@
     } @else {
       <a class="bouton" routerLink="/connexion">Se connecter pour déclarer une pollution</a>
     }
+  </div>
+
+  <div class="defile" aria-hidden="true">
+    <div class="defile__piste">
+      @for (copie of [1, 2]; track copie) {
+        @for (type of types; track type) {
+          <span>{{ type }}</span>
+        }
+      }
+    </div>
   </div>
 
   <app-filtres-pollution [filtres]="filtres()" (filtresChange)="filtres.set($event)" />
@@ -31,7 +48,11 @@
       <p class="compteur">{{ pollutionsFiltrees().length }} résultat{{ pollutionsFiltrees().length > 1 ? 's' : '' }}</p>
       <div class="grille">
         @for (pollution of pollutionsFiltrees(); track pollution.id) {
-          <app-carte-pollution [pollution]="pollution" (suppressionConfirmee)="supprimer($event)" />
+          <app-carte-pollution
+            [pollution]="pollution"
+            [style.animation-delay.ms]="$index * 70"
+            (suppressionConfirmee)="supprimer($event)"
+          />
         } @empty {
           <p class="etat grille__vide">Aucune pollution ne correspond à votre recherche.</p>
         }

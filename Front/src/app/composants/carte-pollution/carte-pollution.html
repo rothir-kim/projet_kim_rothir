@@ -1,6 +1,8 @@
 <article class="carte">
   @if (pollution().urlPhoto; as urlPhoto) {
-    <img class="carte__photo" [src]="urlPhoto" [alt]="'Photo : ' + pollution().titre" loading="lazy" />
+    <div class="carte__cadre-photo">
+      <img class="carte__photo" [src]="urlPhoto" [alt]="'Photo : ' + pollution().titre" loading="lazy" />
+    </div>
   }
   <div class="carte__corps">
     <span class="badge" [attr.data-type]="pollution().type">{{ pollution().type }}</span>

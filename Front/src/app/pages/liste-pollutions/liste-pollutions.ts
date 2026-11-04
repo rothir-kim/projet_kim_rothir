@@ -5,7 +5,7 @@ import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { CartePollution } from '../../composants/carte-pollution/carte-pollution';
 import { FiltresPollution } from '../../composants/filtres-pollution/filtres-pollution';
 import { FILTRES_VIDES, Filtres } from '../../modeles/filtres.modele';
-import { Pollution } from '../../modeles/pollution.modele';
+import { Pollution, TYPES_POLLUTION } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
 import { UserService } from '../../services/user-service';
 import { filtrerPollutions } from '../../utilitaires/filtrer-pollutions';
@@ -28,6 +28,7 @@ export class ListePollutions {
   private rechargement = signal(0);
 
   utilisateurConnecte = inject(UserService).utilisateurConnecte;
+  readonly types = TYPES_POLLUTION;
 
   erreurSuppression = signal('');
   filtres = signal<Filtres>({ ...FILTRES_VIDES });

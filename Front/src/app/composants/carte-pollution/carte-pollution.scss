@@ -1,5 +1,7 @@
+// Chaque carte arrive en glissant (le délai est donné par la liste)
 :host {
   display: block;
+  animation: monter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .carte {
@@ -9,21 +11,30 @@
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--bordure);
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(66, 84, 69, 0.06);
-  transition: box-shadow 0.2s, transform 0.2s;
+  border-radius: var(--rayon-grand);
+  transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), border-color 0.2s, box-shadow 0.25s;
 
   &:hover {
-    box-shadow: 0 8px 24px rgba(66, 84, 69, 0.12);
-    transform: translateY(-2px);
+    border-color: var(--principal);
+    box-shadow: 6px 6px 0 var(--principal);
+    transform: translate(-3px, -3px) rotate(-0.6deg);
   }
+
+  &:hover .carte__photo {
+    transform: scale(1.06);
+  }
+}
+
+.carte__cadre-photo {
+  overflow: hidden;
 }
 
 .carte__photo {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #e9e3d3;
+  background: var(--fond-doux);
+  transition: transform 0.4s ease;
 }
 
 .carte__corps {
@@ -35,7 +46,7 @@
 }
 
 .carte__titre {
-  font-size: 1.15rem;
+  font-size: 1.6rem;
 }
 
 .carte__meta {

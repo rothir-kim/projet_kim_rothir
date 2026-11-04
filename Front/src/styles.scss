@@ -1,19 +1,26 @@
 :root {
-  --fond: #f7eedf;
-  --surface: #ffffff;
-  --bordure: #ccd7cd;
-  --principal: #425445;
-  --principal-fonce: #2f3d32;
-  --texte-doux: #5e6a5c;
-  --accent: #9a5a24;
-  --accent-clair: #c57f42;
-  --danger-fond: #d19b7b;
-  --danger-texte: #3a2a1e;
-  --erreur: #9b3d2e;
-  --halo: #99ab77;
-  --rayon: 12px;
-  --police: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --police-titre: ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+  // Palette « Forêt & orange » : toutes les couleurs du site sont ici
+  --fond: #f2efe6;
+  --fond-entete: rgba(242, 239, 230, 0.92);
+  --fond-doux: #e6e1d3;
+  --surface: #fbfaf5;
+  --champ: #ffffff;
+  --bordure: #d9d4c4;
+  --principal: #17332a;
+  --principal-fonce: #0e221b;
+  --texte-doux: #5b6a61;
+  --sur-couleur: #ffffff;
+  --accent: #d2461f;
+  --accent-fonce: #a8341a;
+  --erreur: #b3261e;
+  --alerte-fond: #fbe9e1;
+  --survol: rgba(23, 51, 42, 0.08);
+  --ligne-survol: #f5efe2;
+  --halo: rgba(210, 70, 31, 0.3);
+  --rayon: 6px;
+  --rayon-grand: 10px;
+  --police: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --police-titre: 'Anton', Impact, 'Arial Narrow', sans-serif;
 }
 
 *,
@@ -30,20 +37,29 @@ body {
   line-height: 1.5;
 }
 
+::selection {
+  background: var(--accent);
+  color: var(--sur-couleur);
+}
+
 h1,
 h2,
 h3 {
   margin: 0;
   font-family: var(--police-titre);
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  letter-spacing: 0.01em;
+  animation: monter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-fonce);
 }
 
 img {
@@ -55,20 +71,26 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--bordure);
-  border-radius: 10px;
-  background: var(--surface);
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border: 1.5px solid var(--principal);
+  border-radius: var(--rayon);
+  background: transparent;
   color: var(--principal);
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
 
   &:hover {
-    border-color: var(--principal);
+    background: var(--principal);
+    color: var(--fond);
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 
   &:focus-visible {
@@ -82,34 +104,44 @@ img {
   }
 }
 
+// Bouton rouge avec la petite flèche qui avance au survol
 .bouton--principal {
-  background: var(--principal);
-  border-color: var(--principal);
-  color: #ffffff;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--sur-couleur);
+
+  &::before {
+    content: '↳';
+    transition: transform 0.2s;
+  }
 
   &:hover {
-    background: var(--principal-fonce);
-    border-color: var(--principal-fonce);
+    border-color: var(--accent-fonce);
+    background: var(--accent-fonce);
+    color: var(--sur-couleur);
+
+    &::before {
+      transform: translateX(4px);
+    }
   }
 }
 
 .bouton--danger {
-  background: var(--danger-fond);
-  border-color: var(--danger-fond);
-  color: var(--danger-texte);
+  border-color: var(--accent);
+  color: var(--accent);
 
   &:hover {
-    border-color: var(--danger-texte);
+    background: var(--accent);
+    color: var(--sur-couleur);
   }
 }
 
 .bouton--discret {
-  background: transparent;
   border-color: transparent;
 
   &:hover {
-    background: rgba(66, 84, 69, 0.08);
-    border-color: transparent;
+    background: var(--survol);
+    color: var(--principal);
   }
 }
 
@@ -119,8 +151,11 @@ img {
   gap: 0.35rem;
 
   label {
-    font-size: 0.85rem;
+    color: var(--texte-doux);
+    font-size: 0.78rem;
     font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   input,
@@ -128,18 +163,22 @@ img {
   textarea {
     width: 100%;
     padding: 0.65rem 0.85rem;
-    border: 1px solid var(--bordure);
-    border-radius: 10px;
-    background: #ffffff;
+    border: 1.5px solid var(--bordure);
+    border-radius: var(--rayon);
+    background: var(--champ);
     color: var(--principal);
     font: inherit;
     font-size: 0.95rem;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      border-color: var(--texte-doux);
+    }
 
     &:focus {
       outline: none;
       border-color: var(--principal);
-      box-shadow: 0 0 0 3px rgba(153, 171, 119, 0.45);
+      box-shadow: 0 0 0 3px var(--halo);
     }
 
     &.ng-invalid.ng-touched {
@@ -161,31 +200,33 @@ img {
 
 .badge {
   display: inline-block;
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 999px;
-  background: #e0ddd0;
-  color: #2f3d32;
-  font-size: 0.78rem;
-  font-weight: 600;
+  background: var(--fond-doux);
+  color: var(--principal);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 
   &[data-type='Eau'] {
-    background: #c6d2ce;
+    background: #cfe2e6;
   }
 
   &[data-type='Plastique'] {
-    background: #e4d4ac;
+    background: #f3dca6;
   }
 
   &[data-type='Chimique'] {
-    background: #c8d3bb;
+    background: #d4e4c2;
   }
 
   &[data-type='Dépôt sauvage'] {
-    background: #e7cec2;
+    background: #f1cdb9;
   }
 
   &[data-type='Air'] {
-    background: #d8e8dc;
+    background: #dfe5ee;
   }
 }
 
@@ -195,8 +236,9 @@ img {
   padding: 2rem;
   background: var(--surface);
   border: 1px solid var(--bordure);
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(66, 84, 69, 0.06);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--rayon-grand);
+  animation: monter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
   @media (max-width: 560px) {
     padding: 1.25rem;
@@ -210,24 +252,18 @@ img {
   gap: 1rem;
   margin-bottom: 1.25rem;
   padding: 0.85rem 1rem;
-  border: 1px solid var(--danger-fond);
-  border-radius: 10px;
-  background: #fbeee8;
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: var(--rayon);
+  background: var(--alerte-fond);
   color: var(--erreur);
+  animation: secouer 0.4s;
 }
 
 .etat {
   padding: 2rem 0;
   color: var(--texte-doux);
   text-align: center;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition: none !important;
-  }
 }
 
 // Champ mot de passe avec le bouton œil (inscription et connexion)
@@ -246,17 +282,55 @@ img {
   display: flex;
   padding: 0.35rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--rayon);
   background: transparent;
   color: var(--texte-doux);
   cursor: pointer;
   transform: translateY(-50%);
+  transition: color 0.2s;
 
   &:hover {
-    color: var(--principal);
+    color: var(--accent);
   }
 
   &:focus-visible {
     outline: 3px solid var(--halo);
+  }
+}
+
+// Les animations réutilisées sur tout le site
+@keyframes monter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes secouer {
+  0%,
+  100% {
+    transform: none;
+  }
+
+  25% {
+    transform: translateX(-6px);
+  }
+
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

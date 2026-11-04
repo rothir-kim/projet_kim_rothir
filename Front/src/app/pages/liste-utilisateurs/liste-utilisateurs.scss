@@ -5,6 +5,8 @@
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--accent);
 }
 
 .page-entete__soustitre {
@@ -16,7 +18,8 @@
   overflow-x: auto;
   background: var(--surface);
   border: 1px solid var(--bordure);
-  border-radius: 16px;
+  border-radius: var(--rayon-grand);
+  animation: monter 0.5s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .tableau {
@@ -40,6 +43,14 @@
 
   tbody tr:last-child td {
     border-bottom: none;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: var(--ligne-survol);
+    }
   }
 }
 
