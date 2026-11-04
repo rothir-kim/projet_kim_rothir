@@ -62,7 +62,6 @@ L'API écoute sur `http://localhost:3000`.
 | POST | `/api/pollutions` | Ajoute une pollution (réponse `201`) |
 | PUT | `/api/pollutions/:id` | Modifie une pollution |
 | DELETE | `/api/pollutions/:id` | Supprime une pollution (réponse `204`) |
-
 | GET | `/api/users` | Liste des utilisateurs (sans les mots de passe) |
 | POST | `/api/users` | Crée un utilisateur (réponse `201`) |
 | POST | `/api/users/login` | Connexion fictive : vérifie le login et le mot de passe |
@@ -137,12 +136,20 @@ L'URL de l'API dépend de l'environnement (remplacement configuré par `fileRepl
 - développement (`ng serve`) : `src/environments/environment.development.ts` → `http://localhost:3000/api`
 - production (`ng build`) : `src/environments/environment.ts` → `https://projet-kim-rothir-api.onrender.com/api`
 
+### Style
+
+Toutes les couleurs du site (palette « Océan ») sont réunies dans le bloc `:root` en haut de `src/styles.scss` : pour changer de palette, il suffit de modifier ce bloc.
+Les polices (Anton pour les titres, DM Sans pour le texte) viennent de Google Fonts et sont chargées dans `src/index.html`.
+Les animations sont coupées automatiquement si l'utilisateur a demandé à son système de réduire les animations.
+
 ## Déploiement
 
 Le déploiement sur Render est décrit dans le fichier `render.yaml` (Blueprint) :
 
 - une base PostgreSQL `pollution-db` (offre gratuite)
 - l'API `projet-kim-rothir-api`, qui reçoit automatiquement l'adresse de la base dans `DATABASE_URL`
+
+Le front est déployé séparément sur Render.
 
 Adresses :
 
