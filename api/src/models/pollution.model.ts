@@ -1,6 +1,8 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "./index";
 
+const TYPES_POLLUTION = ["Plastique", "Chimique", "Dépôt sauvage", "Eau", "Air", "Autre"];
+
 interface PollutionAttributs {
   id: number;
   titre: string;
@@ -14,7 +16,7 @@ interface PollutionAttributs {
 }
 
 // À la création, l'id et la photo ne sont pas obligatoires
-type PollutionCreation = Optional<PollutionAttributs, "id" | "urlPhoto">;
+export type PollutionCreation = Optional<PollutionAttributs, "id" | "urlPhoto">;
 
 export class Pollution
   extends Model<PollutionAttributs, PollutionCreation>
@@ -34,13 +36,13 @@ export class Pollution
 Pollution.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    titre: { type: DataTypes.STRING(120), allowNull: false },
-    type: { type: DataTypes.STRING, allowNull: false },
-    description: { type: DataTypes.TEXT, allowNull: false },
-    date: { type: DataTypes.DATEONLY, allowNull: false },
-    lieu: { type: DataTypes.STRING(200), allowNull: false },
-    latitude: { type: DataTypes.FLOAT, allowNull: false },
-    longitude: { type: DataTypes.FLOAT, allowNull: false },
+    titre: { type: DataTypes.STRING(120), allowNull: false, validate: { notEmpty: true } },
+    type: { type: DataTypes.STRING, allowNull: false, validate: { isIn: [TYPES_POLLUTION] } },
+    description: { type: DataTypes.TEXT, allowNull: false, validate: { notEmpty: true } },
+    date: { type: DataTypes.DATEONLY, allowNull: false, validate: { isDate: true } },
+    lieu: { type: DataTypes.STRING(200), allowNull: false, validate: { notEmpty: true } },
+    latitude: { type: DataTypes.FLOAT, allowNull: false, validate: { min: -90, max: 90 } },
+    longitude: { type: DataTypes.FLOAT, allowNull: false, validate: { min: -180, max: 180 } },
     urlPhoto: { type: DataTypes.STRING(500), allowNull: true },
   },
   { sequelize, tableName: "pollution", timestamps: false }

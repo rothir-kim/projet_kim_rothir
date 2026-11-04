@@ -59,9 +59,12 @@ L'API écoute sur `http://localhost:3000`.
 | GET | `/health` | Vérifie que l'API fonctionne |
 | GET | `/api/pollutions` | Liste des pollutions (de la plus récente à la plus ancienne) |
 | GET | `/api/pollutions/:id` | Détail d'une pollution |
+| POST | `/api/pollutions` | Ajoute une pollution (réponse `201`) |
+| PUT | `/api/pollutions/:id` | Modifie une pollution |
+| DELETE | `/api/pollutions/:id` | Supprime une pollution (réponse `204`) |
 
-> Pour l'instant, seules les routes de lecture (GET) sont branchées sur la base de données.
-> L'ajout, la modification et la suppression seront ajoutés dans un prochain exercice.
+En cas de données invalides (champ vide, type inconnu, latitude hors limites…), l'API répond `400`.
+Si la pollution n'existe pas, elle répond `404`.
 
 ### Organisation du code (`api/src/`)
 

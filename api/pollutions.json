@@ -8,7 +8,7 @@
     "lieu": "Plage du Prado, Marseille",
     "latitude": 43.2578,
     "longitude": 5.3716,
-    "urlPhoto": "https://picsum.photos/seed/plage/800/500"
+    "urlPhoto": "https://commons.wikimedia.org/wiki/Special:FilePath/HIHWNMS_trash_on_the_beach_(50093889173).jpg?width=800"
   },
   {
     "id": 2,
@@ -29,7 +29,7 @@
     "lieu": "Forêt de Fontainebleau, Seine-et-Marne",
     "latitude": 48.4047,
     "longitude": 2.6988,
-    "urlPhoto": "https://picsum.photos/seed/foret/800/500"
+    "urlPhoto": "https://commons.wikimedia.org/wiki/Special:FilePath/Illegal_Dumping_Area_Off_the_New_Jersey_Turnpike_(29323452192).jpg?width=800"
   },
   {
     "id": 4,
@@ -59,8 +59,7 @@
     "date": "2026-09-05",
     "lieu": "Lac d'Annecy, Haute-Savoie",
     "latitude": 45.8992,
-    "longitude": 6.1294,
-    "urlPhoto": "https://picsum.photos/seed/lac/800/500"
+    "longitude": 6.1294
   },
   {
     "id": 7,
