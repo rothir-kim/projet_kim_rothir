@@ -1,0 +1,53 @@
+.page-entete {
+  margin-bottom: 1.5rem;
+}
+
+.page-entete__soustitre {
+  margin: 0.4rem 0 0;
+  color: var(--texte-doux);
+}
+
+.tableau-conteneur {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--bordure);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    color: var(--texte-doux);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.tableau__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.masque {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
