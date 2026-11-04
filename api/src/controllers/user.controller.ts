@@ -14,6 +14,16 @@ const motDePasseValide = (motDePasse: unknown): motDePasse is string =>
   /[0-9]/.test(motDePasse) &&
   /[^a-zA-Z0-9]/.test(motDePasse);
 
+// Renvoie le numéro au format « 06 12 34 56 78 », ou null s'il n'est pas valide
+const formaterTelephone = (valeur: unknown): string | null => {
+  const chiffres = String(valeur ?? "").replace(/\s/g, "");
+  if (!/^0?[1-9][0-9]{8}$/.test(chiffres)) {
+    return null;
+  }
+  const avecZero = chiffres.length === 9 ? `0${chiffres}` : chiffres;
+  return avecZero.replace(/(\d{2})(?=\d)/g, "$1 ");
+};
+
 // Le mot de passe ne doit jamais repartir vers le navigateur
 const sansMotDePasse = (utilisateur: User) => {
   const { motDePasse, ...reste } = utilisateur.get();
@@ -36,6 +46,11 @@ export const create = async (req: Request, res: Response) => {
       res.status(400).json({ message: "Données invalides", details: [MESSAGE_MOT_DE_PASSE] });
       return;
     }
+    const telephoneFormate = formaterTelephone(telephone);
+    if (telephoneFormate === null) {
+      res.status(400).json({ message: "Données invalides", details: ["Le téléphone doit contenir 10 chiffres"] });
+      return;
+    }
     const utilisateur = await User.create({
       login,
       motDePasse: await hash(motDePasse, 10),
@@ -43,7 +58,7 @@ export const create = async (req: Request, res: Response) => {
       prenom,
       adresse,
       email,
-      telephone,
+      telephone: telephoneFormate,
       dateNaissance,
     });
     res.status(201).json(sansMotDePasse(utilisateur));

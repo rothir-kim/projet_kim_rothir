@@ -1,13 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { User } from '../../modeles/user.modele';
 import { UserService } from '../../services/user-service';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 
 @Component({
   selector: 'app-liste-utilisateurs',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './liste-utilisateurs.html',
   styleUrl: './liste-utilisateurs.scss',
 })

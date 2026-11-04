@@ -81,6 +81,8 @@ Codes d'erreur :
 
 Un utilisateur a les champs : `login`, `motDePasse`, `nom`, `prenom`, `adresse`, `email`, `telephone`, `dateNaissance` (AAAA-MM-JJ).
 
+Le téléphone ne doit contenir que des chiffres : le 0 du début et les espaces sont facultatifs, et il est enregistré au format `06 12 34 56 78`.
+
 Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
 Il est enregistré haché avec `bcryptjs` (jamais en clair) et n'est jamais renvoyé par l'API.
 

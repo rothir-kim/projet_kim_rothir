@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DetailPollution } from './pages/detail-pollution/detail-pollution';
 import { FormulairePollution } from './pages/formulaire-pollution/formulaire-pollution';
+import { Inscription } from './pages/inscription/inscription';
 import { ListePollutions } from './pages/liste-pollutions/liste-pollutions';
 import { ListeUtilisateurs } from './pages/liste-utilisateurs/liste-utilisateurs';
 
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'pollutions/:id', component: DetailPollution },
   { path: 'pollutions/:id/modifier', component: FormulairePollution },
   { path: 'utilisateurs', component: ListeUtilisateurs },
+  { path: 'inscription', component: Inscription },
   { path: '**', redirectTo: 'pollutions' },
 ];

@@ -229,3 +229,34 @@ img {
     transition: none !important;
   }
 }
+
+// Champ mot de passe avec le bouton œil (inscription et connexion)
+.champ__mot-de-passe {
+  position: relative;
+
+  input {
+    padding-right: 3rem;
+  }
+}
+
+.bouton-oeil {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  display: flex;
+  padding: 0.35rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texte-doux);
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  &:hover {
+    color: var(--principal);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--halo);
+  }
+}
