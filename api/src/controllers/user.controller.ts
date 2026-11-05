@@ -1,100 +1,49 @@
 import { Request, Response } from "express";
-import { compare, hash } from "bcryptjs";
+import { compare } from "bcryptjs";
 import { User } from "../models/user.model";
-import { repondreErreur } from "./erreur";
 
-const MESSAGE_MOT_DE_PASSE =
-  "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial";
-
-const motDePasseValide = (motDePasse: unknown): motDePasse is string =>
-  typeof motDePasse === "string" &&
-  motDePasse.length >= 8 &&
-  /[a-z]/.test(motDePasse) &&
-  /[A-Z]/.test(motDePasse) &&
-  /[0-9]/.test(motDePasse) &&
-  /[^a-zA-Z0-9]/.test(motDePasse);
-
-// Renvoie le numéro au format « 06 12 34 56 78 », ou null s'il n'est pas valide
-const formaterTelephone = (valeur: unknown): string | null => {
-  const chiffres = String(valeur ?? "").replace(/\s/g, "");
-  if (!/^0?[1-9][0-9]{8}$/.test(chiffres)) {
-    return null;
-  }
-  const avecZero = chiffres.length === 9 ? `0${chiffres}` : chiffres;
-  return avecZero.replace(/(\d{2})(?=\d)/g, "$1 ");
-};
-
-// Le mot de passe ne doit jamais repartir vers le navigateur
-const sansMotDePasse = (utilisateur: User) => {
-  const { motDePasse, ...reste } = utilisateur.get();
-  return reste;
-};
-
+// Les vérifications (mot de passe, téléphone…) et le hachage sont faits dans le modèle
 export const getAll = async (_req: Request, res: Response) => {
-  try {
-    const utilisateurs = await User.findAll({ order: [["nom", "ASC"], ["prenom", "ASC"]] });
-    res.json(utilisateurs.map(sansMotDePasse));
-  } catch (erreur) {
-    repondreErreur(res, erreur);
-  }
+  const utilisateurs = await User.findAll({ order: [["nom", "ASC"], ["prenom", "ASC"]] });
+  res.json(utilisateurs);
 };
 
 export const create = async (req: Request, res: Response) => {
-  try {
-    const { login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance } = req.body ?? {};
-    if (!motDePasseValide(motDePasse)) {
-      res.status(400).json({ message: "Données invalides", details: [MESSAGE_MOT_DE_PASSE] });
-      return;
-    }
-    const telephoneFormate = formaterTelephone(telephone);
-    if (telephoneFormate === null) {
-      res.status(400).json({ message: "Données invalides", details: ["Le téléphone doit contenir 10 chiffres"] });
-      return;
-    }
-    const utilisateur = await User.create({
-      login,
-      motDePasse: await hash(motDePasse, 10),
-      nom,
-      prenom,
-      adresse,
-      email,
-      telephone: telephoneFormate,
-      dateNaissance,
-    });
-    res.status(201).json(sansMotDePasse(utilisateur));
-  } catch (erreur) {
-    repondreErreur(res, erreur);
-  }
+  const { login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance } = req.body ?? {};
+  const utilisateur = await User.create({
+    login,
+    motDePasse,
+    nom,
+    prenom,
+    adresse,
+    email,
+    telephone,
+    dateNaissance,
+  });
+  // On relit l'utilisateur pour le renvoyer sans le mot de passe
+  res.status(201).json(await User.findByPk(utilisateur.id));
 };
 
 export const remove = async (req: Request, res: Response) => {
-  try {
-    const nombreSupprimes = await User.destroy({ where: { id: Number(req.params.id) } });
-    if (nombreSupprimes === 0) {
-      res.status(404).json({ message: "Utilisateur introuvable" });
-      return;
-    }
-    res.status(204).end();
-  } catch (erreur) {
-    repondreErreur(res, erreur);
+  const nombreSupprimes = await User.destroy({ where: { id: Number(req.params.id) } });
+  if (nombreSupprimes === 0) {
+    res.status(404).json({ message: "Utilisateur introuvable" });
+    return;
   }
+  res.status(204).end();
 };
 
 export const login = async (req: Request, res: Response) => {
-  try {
-    const identifiant = req.body?.login;
-    const motDePasse = req.body?.motDePasse;
-    if (typeof identifiant !== "string" || typeof motDePasse !== "string") {
-      res.status(400).json({ message: "Login et mot de passe obligatoires" });
-      return;
-    }
-    const utilisateur = await User.findOne({ where: { login: identifiant } });
-    if (!utilisateur || !(await compare(motDePasse, utilisateur.motDePasse))) {
-      res.status(401).json({ message: "Login ou mot de passe incorrect" });
-      return;
-    }
-    res.json(sansMotDePasse(utilisateur));
-  } catch (erreur) {
-    repondreErreur(res, erreur);
+  const identifiant = req.body?.login;
+  const motDePasse = req.body?.motDePasse;
+  if (typeof identifiant !== "string" || typeof motDePasse !== "string") {
+    res.status(400).json({ message: "Login et mot de passe obligatoires" });
+    return;
   }
+  const utilisateur = await User.unscoped().findOne({ where: { login: identifiant } });
+  if (!utilisateur || !(await compare(motDePasse, utilisateur.motDePasse))) {
+    res.status(401).json({ message: "Login ou mot de passe incorrect" });
+    return;
+  }
+  res.json(await User.findByPk(utilisateur.id));
 };

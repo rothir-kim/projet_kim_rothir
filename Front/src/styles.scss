@@ -15,6 +15,8 @@
   --accent-clair: #6cc3d5;
   --erreur: #b3261e;
   --alerte-fond: #fbe9e6;
+  --succes: #1e6b47;
+  --succes-fond: #e4f3ea;
   --survol: rgba(15, 42, 61, 0.08);
   --ligne-survol: #e6f0f1;
   --halo: rgba(31, 111, 139, 0.3);
@@ -260,6 +262,16 @@ img {
   background: var(--alerte-fond);
   color: var(--erreur);
   animation: secouer 0.4s;
+}
+
+.succes {
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--succes);
+  border-left-width: 4px;
+  border-radius: var(--rayon);
+  background: var(--succes-fond);
+  color: var(--succes);
 }
 
 .etat {

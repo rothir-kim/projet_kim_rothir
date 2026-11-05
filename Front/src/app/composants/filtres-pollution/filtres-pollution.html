@@ -24,4 +24,7 @@
       [ngModel]="filtres().dateFin" (ngModelChange)="changerDateFin($event)" />
   </div>
   <button type="button" class="bouton bouton--discret" (click)="reinitialiser()">Réinitialiser</button>
+  @if (datesInversees()) {
+    <p class="champ__erreur filtres__erreur" role="alert">La date « Du » doit être avant la date « Au ».</p>
+  }
 </form>

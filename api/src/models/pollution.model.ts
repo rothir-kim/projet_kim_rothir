@@ -1,7 +1,9 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "./index";
+import { User } from "./user.model";
+import { pasDansLeFutur, urlHttp } from "./validateurs";
 
-const TYPES_POLLUTION = ["Plastique", "Chimique", "Dépôt sauvage", "Eau", "Air", "Autre"];
+export const TYPES_POLLUTION = ["Plastique", "Chimique", "Dépôt sauvage", "Eau", "Air", "Autre"];
 
 interface PollutionAttributs {
   id: number;
@@ -13,10 +15,11 @@ interface PollutionAttributs {
   latitude: number;
   longitude: number;
   urlPhoto: string | null;
+  auteurId: number | null;
 }
 
-// À la création, l'id et la photo ne sont pas obligatoires
-export type PollutionCreation = Optional<PollutionAttributs, "id" | "urlPhoto">;
+// À la création, l'id, la photo et l'auteur ne sont pas obligatoires
+export type PollutionCreation = Optional<PollutionAttributs, "id" | "urlPhoto" | "auteurId">;
 
 export class Pollution
   extends Model<PollutionAttributs, PollutionCreation>
@@ -31,19 +34,65 @@ export class Pollution
   declare latitude: number;
   declare longitude: number;
   declare urlPhoto: string | null;
+  declare auteurId: number | null;
+  declare auteur?: User | null;
 }
 
 Pollution.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    titre: { type: DataTypes.STRING(120), allowNull: false, validate: { notEmpty: true } },
-    type: { type: DataTypes.STRING, allowNull: false, validate: { isIn: [TYPES_POLLUTION] } },
-    description: { type: DataTypes.TEXT, allowNull: false, validate: { notEmpty: true } },
-    date: { type: DataTypes.DATEONLY, allowNull: false, validate: { isDate: true } },
-    lieu: { type: DataTypes.STRING(200), allowNull: false, validate: { notEmpty: true } },
-    latitude: { type: DataTypes.FLOAT, allowNull: false, validate: { min: -90, max: 90 } },
-    longitude: { type: DataTypes.FLOAT, allowNull: false, validate: { min: -180, max: 180 } },
-    urlPhoto: { type: DataTypes.STRING(500), allowNull: true },
+    titre: {
+      type: DataTypes.STRING(120),
+      allowNull: false,
+      validate: { notEmpty: { msg: "Le titre est requis" } },
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { isIn: { args: [TYPES_POLLUTION], msg: "Type de pollution inconnu" } },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: { notEmpty: { msg: "La description est requise" } },
+    },
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: { isDate: { args: true, msg: "La date n'est pas valide" }, pasDansLeFutur },
+    },
+    lieu: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
+      validate: { notEmpty: { msg: "Le lieu est requis" } },
+    },
+    latitude: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        isFloat: { msg: "La latitude doit être un nombre" },
+        min: { args: [-90], msg: "La latitude doit être entre -90 et 90" },
+        max: { args: [90], msg: "La latitude doit être entre -90 et 90" },
+      },
+    },
+    longitude: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        isFloat: { msg: "La longitude doit être un nombre" },
+        min: { args: [-180], msg: "La longitude doit être entre -180 et 180" },
+        max: { args: [180], msg: "La longitude doit être entre -180 et 180" },
+      },
+    },
+    urlPhoto: { type: DataTypes.STRING(500), allowNull: true, validate: { urlHttp } },
+    auteurId: { type: DataTypes.INTEGER, allowNull: true },
   },
   { sequelize, tableName: "pollution", timestamps: false }
 );
+
+Pollution.belongsTo(User, { as: "auteur", foreignKey: "auteurId" });
+
+// Ce qu'on renvoie de l'auteur avec chaque pollution
+export const AVEC_AUTEUR = {
+  include: [{ model: User, as: "auteur", attributes: ["id", "prenom", "nom"] }],
+};

@@ -1,15 +1,11 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../modeles/pollution.modele';
 import { PollutionService } from '../../services/pollution-service';
+import { UserService } from '../../services/user-service';
+import { champInvalide } from '../../utilitaires/champ-invalide';
 import { lireId } from '../../utilitaires/lire-id';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
@@ -24,6 +20,7 @@ import { urlPhotoValide } from '../../validateurs/url-photo.validateur';
 })
 export class FormulairePollution {
   private servicePollution = inject(PollutionService);
+  private serviceUser = inject(UserService);
   private routeur = inject(Router);
   private destroyRef = inject(DestroyRef);
   // Le snapshot suffit : « nouvelle » et « modifier » sont deux routes différentes,
@@ -84,9 +81,7 @@ export class FormulairePollution {
       });
   }
 
-  invalide(controle: AbstractControl): boolean {
-    return controle.invalid && controle.touched;
-  }
+  invalide = champInvalide;
 
   enregistrer(): void {
     if (this.formulaire.invalid) {
@@ -98,7 +93,6 @@ export class FormulairePollution {
     if (type === null || latitude === null || longitude === null) {
       return;
     }
-    const urlPhotoNettoyee = urlPhoto.trim();
     const saisie: PollutionSaisie = {
       titre: titre.trim(),
       type,
@@ -107,11 +101,13 @@ export class FormulairePollution {
       lieu: lieu.trim(),
       latitude,
       longitude,
-      ...(urlPhotoNettoyee ? { urlPhoto: urlPhotoNettoyee } : {}),
+      urlPhoto: urlPhoto.trim() || null,
     };
+    // La page est protégée par le guard : il y a toujours quelqu'un de connecté ici
+    const auteurId = this.serviceUser.utilisateurConnecte()?.id ?? 0;
     const requete =
       this.id === null
-        ? this.servicePollution.ajouter(saisie)
+        ? this.servicePollution.ajouter(saisie, auteurId)
         : this.servicePollution.modifier(this.id, saisie);
 
     this.erreur.set('');

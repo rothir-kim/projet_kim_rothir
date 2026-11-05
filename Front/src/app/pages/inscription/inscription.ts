@@ -1,12 +1,13 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 import { IconeOeil } from '../../composants/icone-oeil/icone-oeil';
 import { UserSaisie } from '../../modeles/user.modele';
 import { AdresseService } from '../../services/adresse-service';
 import { UserService } from '../../services/user-service';
+import { champInvalide } from '../../utilitaires/champ-invalide';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
 import {
@@ -30,6 +31,7 @@ export class Inscription {
   private destroyRef = inject(DestroyRef);
 
   readonly dateMax = dateDuJour();
+  utilisateurConnecte = this.serviceUser.utilisateurConnecte;
 
   motDePasseVisible = signal(false);
   confirmationVisible = signal(false);
@@ -80,9 +82,7 @@ export class Inscription {
     { initialValue: [] as string[] },
   );
 
-  invalide(controle: AbstractControl): boolean {
-    return controle.invalid && controle.touched;
-  }
+  invalide = champInvalide;
 
   confirmationInvalide(): boolean {
     const confirmation = this.formulaire.controls.confirmation;
@@ -116,7 +116,14 @@ export class Inscription {
       .ajouter(saisie)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => this.routeur.navigate(['/utilisateurs']),
+        next: () => {
+          // Un visiteur doit d'abord se connecter, la liste des utilisateurs lui est fermée
+          if (this.utilisateurConnecte()) {
+            this.routeur.navigate(['/utilisateurs']);
+          } else {
+            this.routeur.navigate(['/connexion'], { queryParams: { inscription: 'ok' } });
+          }
+        },
         error: (erreur) => {
           this.envoiEnCours.set(false);
           this.erreur.set(messageErreurHttp(erreur));

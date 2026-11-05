@@ -23,6 +23,16 @@
         <dd>{{ fiche.lieu }}</dd>
       </div>
       <div>
+        <dt>Déclarée par</dt>
+        <dd>
+          @if (fiche.auteur; as auteur) {
+            {{ auteur.prenom }} {{ auteur.nom }}
+          } @else {
+            Auteur inconnu
+          }
+        </dd>
+      </div>
+      <div>
         <dt>Coordonnées GPS</dt>
         <dd>{{ fiche.latitude }}, {{ fiche.longitude }}</dd>
       </div>

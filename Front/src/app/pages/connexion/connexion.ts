@@ -1,9 +1,10 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IconeOeil } from '../../composants/icone-oeil/icone-oeil';
 import { UserService } from '../../services/user-service';
+import { champInvalide } from '../../utilitaires/champ-invalide';
 import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
 import { nonVide } from '../../validateurs/non-vide.validateur';
 
@@ -18,6 +19,10 @@ export class Connexion {
   private routeur = inject(Router);
   private destroyRef = inject(DestroyRef);
 
+  // Vrai quand on arrive ici juste après une inscription (/connexion?inscription=ok)
+  readonly compteCree =
+    inject(ActivatedRoute).snapshot.queryParamMap.get('inscription') === 'ok';
+
   motDePasseVisible = signal(false);
   envoiEnCours = signal(false);
   erreur = signal('');
@@ -27,9 +32,7 @@ export class Connexion {
     motDePasse: new FormControl('', { nonNullable: true, validators: [nonVide] }),
   });
 
-  invalide(controle: AbstractControl): boolean {
-    return controle.invalid && controle.touched;
-  }
+  invalide = champInvalide;
 
   seConnecter(): void {
     if (this.formulaire.invalid) {

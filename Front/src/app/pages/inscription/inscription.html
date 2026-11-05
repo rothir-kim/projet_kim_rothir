@@ -136,7 +136,7 @@
     </div>
 
     <div class="formulaire__actions">
-      <a class="bouton bouton--discret" routerLink="/utilisateurs">Annuler</a>
+      <a class="bouton bouton--discret" [routerLink]="utilisateurConnecte() ? '/utilisateurs' : '/pollutions'">Annuler</a>
       <button type="submit" class="bouton bouton--principal" [disabled]="envoiEnCours()">S'inscrire</button>
     </div>
   </form>

@@ -4,6 +4,10 @@
     Pas encore de compte ? <a routerLink="/inscription">Créez-en un</a>.
   </p>
 
+  @if (compteCree && !erreur()) {
+    <div class="succes" role="status">Votre compte a bien été créé. Vous pouvez maintenant vous connecter.</div>
+  }
+
   @if (erreur()) {
     <div class="alerte" role="alert">{{ erreur() }}</div>
   }

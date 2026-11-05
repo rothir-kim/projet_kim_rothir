@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "tp03": {
+    "alerte-pollution": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -65,10 +65,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tp03:build:production"
+              "buildTarget": "alerte-pollution:build:production"
             },
             "development": {
-              "buildTarget": "tp03:build:development"
+              "buildTarget": "alerte-pollution:build:development"
             }
           },
           "defaultConfiguration": "development"

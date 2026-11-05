@@ -34,29 +34,25 @@
     <div class="alerte" role="alert">{{ erreurSuppression() }}</div>
   }
 
-  @switch (etat().statut) {
-    @case ('chargement') {
-      <p class="etat">Chargement des pollutions…</p>
-    }
-    @case ('erreur') {
-      <div class="alerte" role="alert">
-        <span>{{ messageErreur() }}</span>
-        <button type="button" class="bouton" (click)="recharger()">Réessayer</button>
-      </div>
-    }
-    @case ('ok') {
-      <p class="compteur">{{ pollutionsFiltrees().length }} résultat{{ pollutionsFiltrees().length > 1 ? 's' : '' }}</p>
-      <div class="grille">
-        @for (pollution of pollutionsFiltrees(); track pollution.id) {
-          <app-carte-pollution
-            [pollution]="pollution"
-            [style.animation-delay.ms]="$index * 70"
-            (suppressionConfirmee)="supprimer($event)"
-          />
-        } @empty {
-          <p class="etat grille__vide">Aucune pollution ne correspond à votre recherche.</p>
-        }
-      </div>
-    }
+  @if (chargement()) {
+    <p class="etat">Chargement des pollutions…</p>
+  } @else if (erreur()) {
+    <div class="alerte" role="alert">
+      <span>{{ erreur() }}</span>
+      <button type="button" class="bouton" (click)="charger()">Réessayer</button>
+    </div>
+  } @else {
+    <p class="compteur">{{ pollutionsFiltrees().length }} résultat{{ pollutionsFiltrees().length > 1 ? 's' : '' }}</p>
+    <div class="grille">
+      @for (pollution of pollutionsFiltrees(); track pollution.id) {
+        <app-carte-pollution
+          [pollution]="pollution"
+          [style.animation-delay.ms]="$index * 70"
+          (suppressionConfirmee)="supprimer($event)"
+        />
+      } @empty {
+        <p class="etat grille__vide">Aucune pollution ne correspond à votre recherche.</p>
+      }
+    </div>
   }
 </section>
