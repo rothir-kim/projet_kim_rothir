@@ -20,6 +20,7 @@ export class ListeUtilisateurs {
   utilisateurs = signal<User[]>([]);
   chargement = signal(true);
   erreur = signal('');
+  erreurSuppression = signal('');
   idAConfirmer = signal<number | null>(null);
 
   constructor() {
@@ -29,6 +30,7 @@ export class ListeUtilisateurs {
   charger(): void {
     this.chargement.set(true);
     this.erreur.set('');
+    this.erreurSuppression.set('');
     this.serviceUser
       .lister()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -46,7 +48,7 @@ export class ListeUtilisateurs {
 
   supprimer(id: number): void {
     this.idAConfirmer.set(null);
-    this.erreur.set('');
+    this.erreurSuppression.set('');
     this.serviceUser
       .supprimer(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -60,7 +62,7 @@ export class ListeUtilisateurs {
           }
           this.charger();
         },
-        error: (erreur) => this.erreur.set(messageErreurHttp(erreur)),
+        error: (erreur) => this.erreurSuppression.set(messageErreurHttp(erreur)),
       });
   }
 }

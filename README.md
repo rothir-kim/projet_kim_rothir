@@ -32,8 +32,8 @@ Puis lancer :
 npm run dev
 ```
 
-Au démarrage, l'API lance les **migrations** (avec la librairie `umzug`) : elles créent ou mettent à jour les tables `pollution` et `utilisateur`. La liste des migrations déjà faites est gardée dans la table `SequelizeMeta`.
-Au premier lancement, la table `pollution` est ensuite remplie avec les données de `api/pollutions.json` (ces pollutions n'ont pas d'auteur).
+Au démarrage, l'API lance les **migrations** (avec la librairie `umzug`) : elles créent ou mettent à jour les tables `pollution` et `utilisateur`. La liste des migrations déjà faites est gardée dans la table `SequelizeMeta`, donc chaque migration ne s'exécute qu'une seule fois.
+La migration `003` remplit la table `pollution` avec les données de `api/pollutions.json` si elle est vide (ces pollutions n'ont pas d'auteur). Comme c'est une migration, ces pollutions ne reviennent pas toutes seules si on les supprime ensuite.
 
 L'API écoute sur `http://localhost:3000`.
 
@@ -107,7 +107,8 @@ src/
 ├── migrations/
 │   ├── index.ts                     liste des migrations, lancées au démarrage
 │   ├── 001-creation-tables.ts       création des tables
-│   └── 002-ajout-auteur.ts          ajout de la colonne auteurId
+│   ├── 002-ajout-auteur.ts          ajout de la colonne auteurId
+│   └── 003-pollutions-de-depart.ts  pollutions de départ (si la table est vide)
 ├── middlewares/
 │   ├── verifier-id.ts               refuse les id qui ne sont pas des nombres (404)
 │   └── gestion-erreurs.ts           réponses d'erreur communes (400, 409, 500)
@@ -168,7 +169,15 @@ Le déploiement sur Render est décrit dans le fichier `render.yaml` (Blueprint)
 - une base PostgreSQL `pollution-db` (offre gratuite)
 - l'API `projet-kim-rothir-api`, qui reçoit automatiquement l'adresse de la base dans `DATABASE_URL`
 
-Le front est déployé séparément sur Render (site statique). Il a une règle de réécriture pour que les adresses comme `/pollutions/3` marchent aussi après un rechargement de la page :
+Dans le tableau de bord Render, le service API doit avoir la variable d'environnement `ORIGINES_AUTORISEES` remplie à la main (elle est marquée `sync: false` dans `render.yaml`) :
+
+```
+ORIGINES_AUTORISEES=https://projet-kim-rothir.onrender.com
+```
+
+Sans `/` à la fin : sinon le CORS bloque le front en production.
+
+Le front est déployé séparément sur Render (site statique), avec la commande `npm install && npm run build` et le dossier de publication `dist/alerte-pollution/browser` (Root Directory : `Front/`). Il a une règle de réécriture pour que les adresses comme `/pollutions/3` marchent aussi après un rechargement de la page :
 
 | Source | Destination | Action |
 |---|---|---|

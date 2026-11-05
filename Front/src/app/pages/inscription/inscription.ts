@@ -15,6 +15,7 @@ import {
   motDePasseRobuste,
   motsDePasseIdentiques,
 } from '../../validateurs/mot-de-passe.validateur';
+import { FORMAT_EMAIL } from '../../validateurs/email.validateur';
 import { nonVide } from '../../validateurs/non-vide.validateur';
 import { formaterTelephone, telephoneValide } from '../../validateurs/telephone.validateur';
 
@@ -48,7 +49,7 @@ export class Inscription {
       adresse: new FormControl('', { nonNullable: true, validators: [nonVide] }),
       email: new FormControl('', {
         nonNullable: true,
-        validators: [nonVide, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)],
+        validators: [nonVide, Validators.pattern(FORMAT_EMAIL)],
       }),
       telephone: new FormControl('', { nonNullable: true, validators: [nonVide, telephoneValide] }),
       dateNaissance: new FormControl('', {

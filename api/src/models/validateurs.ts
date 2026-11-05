@@ -1,3 +1,6 @@
+// Même règle que le front (Front/src/app/validateurs/email.validateur.ts)
+export const FORMAT_EMAIL = /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/;
+
 // Un jour de marge : le serveur Render est en heure UTC, pas à l'heure française
 export const pasDansLeFutur = (valeur: unknown): void => {
   const demain = new Date(Date.now() + 24 * 60 * 60 * 1000);

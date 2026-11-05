@@ -1,7 +1,7 @@
 import { hash } from "bcryptjs";
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "./index";
-import { formaterTelephone, motDePasseRobuste, pasDansLeFutur } from "./validateurs";
+import { FORMAT_EMAIL, formaterTelephone, motDePasseRobuste, pasDansLeFutur } from "./validateurs";
 
 interface UserAttributs {
   id: number;
@@ -36,7 +36,10 @@ User.init(
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
-      validate: { notEmpty: { msg: "Le login est requis" } },
+      validate: {
+        notEmpty: { msg: "Le login est requis" },
+        len: { args: [0, 50], msg: "Le login ne doit pas dépasser 50 caractères" },
+      },
     },
     motDePasse: {
       type: DataTypes.STRING,
@@ -46,23 +49,35 @@ User.init(
     nom: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      validate: { notEmpty: { msg: "Le nom est requis" } },
+      validate: {
+        notEmpty: { msg: "Le nom est requis" },
+        len: { args: [0, 100], msg: "Le nom ne doit pas dépasser 100 caractères" },
+      },
     },
     prenom: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      validate: { notEmpty: { msg: "Le prénom est requis" } },
+      validate: {
+        notEmpty: { msg: "Le prénom est requis" },
+        len: { args: [0, 100], msg: "Le prénom ne doit pas dépasser 100 caractères" },
+      },
     },
     adresse: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      validate: { notEmpty: { msg: "L'adresse est requise" } },
+      validate: {
+        notEmpty: { msg: "L'adresse est requise" },
+        len: { args: [0, 255], msg: "L'adresse ne doit pas dépasser 255 caractères" },
+      },
     },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
-      validate: { isEmail: { msg: "L'email n'est pas valide" } },
+      validate: {
+        is: { args: FORMAT_EMAIL, msg: "L'email n'est pas valide" },
+        len: { args: [0, 255], msg: "L'email ne doit pas dépasser 255 caractères" },
+      },
     },
     telephone: {
       type: DataTypes.STRING(20),

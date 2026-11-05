@@ -44,7 +44,10 @@ Pollution.init(
     titre: {
       type: DataTypes.STRING(120),
       allowNull: false,
-      validate: { notEmpty: { msg: "Le titre est requis" } },
+      validate: {
+        notEmpty: { msg: "Le titre est requis" },
+        len: { args: [0, 120], msg: "Le titre ne doit pas dépasser 120 caractères" },
+      },
     },
     type: {
       type: DataTypes.STRING,
@@ -54,7 +57,10 @@ Pollution.init(
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
-      validate: { notEmpty: { msg: "La description est requise" } },
+      validate: {
+        notEmpty: { msg: "La description est requise" },
+        len: { args: [0, 2000], msg: "La description ne doit pas dépasser 2000 caractères" },
+      },
     },
     date: {
       type: DataTypes.DATEONLY,
@@ -64,7 +70,10 @@ Pollution.init(
     lieu: {
       type: DataTypes.STRING(200),
       allowNull: false,
-      validate: { notEmpty: { msg: "Le lieu est requis" } },
+      validate: {
+        notEmpty: { msg: "Le lieu est requis" },
+        len: { args: [0, 200], msg: "Le lieu ne doit pas dépasser 200 caractères" },
+      },
     },
     latitude: {
       type: DataTypes.FLOAT,
@@ -84,7 +93,11 @@ Pollution.init(
         max: { args: [180], msg: "La longitude doit être entre -180 et 180" },
       },
     },
-    urlPhoto: { type: DataTypes.STRING(500), allowNull: true, validate: { urlHttp } },
+    urlPhoto: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      validate: { urlHttp, len: { args: [0, 500], msg: "L'URL de la photo ne doit pas dépasser 500 caractères" } },
+    },
     auteurId: { type: DataTypes.INTEGER, allowNull: true },
   },
   { sequelize, tableName: "pollution", timestamps: false }

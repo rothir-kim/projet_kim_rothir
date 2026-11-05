@@ -38,6 +38,7 @@ export class ListePollutions {
   charger(): void {
     this.chargement.set(true);
     this.erreur.set('');
+    this.erreurSuppression.set('');
     this.servicePollution
       .lister()
       .pipe(takeUntilDestroyed(this.destroyRef))

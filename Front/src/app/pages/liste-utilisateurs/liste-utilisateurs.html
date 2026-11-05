@@ -7,15 +7,17 @@
     <a class="bouton bouton--principal" routerLink="/inscription">Nouvel utilisateur</a>
   </div>
 
-  @if (erreur()) {
-    <div class="alerte" role="alert">
-      <span>{{ erreur() }}</span>
-      <button type="button" class="bouton" (click)="charger()">Réessayer</button>
-    </div>
+  @if (erreurSuppression()) {
+    <div class="alerte" role="alert">{{ erreurSuppression() }}</div>
   }
 
   @if (chargement()) {
     <p class="etat">Chargement des utilisateurs…</p>
+  } @else if (erreur()) {
+    <div class="alerte" role="alert">
+      <span>{{ erreur() }}</span>
+      <button type="button" class="bouton" (click)="charger()">Réessayer</button>
+    </div>
   } @else if (utilisateurs().length === 0) {
     <p class="etat">Aucun utilisateur pour le moment.</p>
   } @else {
