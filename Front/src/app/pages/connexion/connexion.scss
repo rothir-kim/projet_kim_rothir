@@ -1,0 +1,20 @@
+.connexion {
+  max-width: 420px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
+
+.connexion__intro {
+  margin: 0.4rem 0 1.5rem;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.connexion__bouton {
+  width: 100%;
+  margin-top: 0.5rem;
+}

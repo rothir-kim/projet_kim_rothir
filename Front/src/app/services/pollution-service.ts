@@ -17,8 +17,8 @@ export class PollutionService {
     return this.http.get<Pollution>(`${this.urlBase}/${id}`);
   }
 
-  ajouter(pollution: PollutionSaisie): Observable<Pollution> {
-    return this.http.post<Pollution>(this.urlBase, pollution);
+  ajouter(pollution: PollutionSaisie, auteurId: number): Observable<Pollution> {
+    return this.http.post<Pollution>(this.urlBase, { ...pollution, auteurId });
   }
 
   modifier(id: number, pollution: PollutionSaisie): Observable<Pollution> {

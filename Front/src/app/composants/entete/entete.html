@@ -1,9 +1,23 @@
 <header class="entete">
   <div class="entete__contenu">
-    <a class="entete__marque" routerLink="/pollutions">TP03</a>
+    <a class="entete__marque" routerLink="/pollutions">Alerte Pollution</a>
+
     <nav class="entete__navigation" aria-label="Navigation principale">
       <a routerLink="/pollutions" routerLinkActive="actif" [routerLinkActiveOptions]="{ exact: true }">Pollutions</a>
-      <a routerLink="/pollutions/nouvelle" routerLinkActive="actif">Nouvelle pollution</a>
+      @if (utilisateurConnecte()) {
+        <a routerLink="/pollutions/nouvelle" routerLinkActive="actif">Nouvelle pollution</a>
+        <a routerLink="/utilisateurs" routerLinkActive="actif">Utilisateurs</a>
+      }
     </nav>
+
+    <div class="entete__compte">
+      @if (utilisateurConnecte(); as utilisateur) {
+        <span class="entete__utilisateur">{{ utilisateur.prenom }} {{ utilisateur.nom }}</span>
+        <button type="button" class="bouton" (click)="seDeconnecter()">Se déconnecter</button>
+      } @else {
+        <a class="bouton" routerLink="/connexion">Se connecter</a>
+        <a class="bouton bouton--principal" routerLink="/inscription">S'inscrire</a>
+      }
+    </div>
   </div>
 </header>

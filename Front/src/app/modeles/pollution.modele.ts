@@ -17,9 +17,18 @@ export interface PollutionSaisie {
   lieu: string;
   latitude: number;
   longitude: number;
-  urlPhoto?: string;
+  urlPhoto: string | null;
 }
 
+export interface Auteur {
+  id: number;
+  prenom: string;
+  nom: string;
+}
+
+// auteur vaut null pour les pollutions de départ ou si le compte a été supprimé
 export interface Pollution extends PollutionSaisie {
   id: number;
+  auteurId: number | null;
+  auteur: Auteur | null;
 }

@@ -1,0 +1,70 @@
+<section>
+  <div class="page-entete">
+    <div>
+      <h1>Utilisateurs</h1>
+      <p class="page-entete__soustitre">Les comptes créés sur l'application.</p>
+    </div>
+    <a class="bouton bouton--principal" routerLink="/inscription">Nouvel utilisateur</a>
+  </div>
+
+  @if (erreurSuppression()) {
+    <div class="alerte" role="alert">{{ erreurSuppression() }}</div>
+  }
+
+  @if (chargement()) {
+    <p class="etat">Chargement des utilisateurs…</p>
+  } @else if (erreur()) {
+    <div class="alerte" role="alert">
+      <span>{{ erreur() }}</span>
+      <button type="button" class="bouton" (click)="charger()">Réessayer</button>
+    </div>
+  } @else if (utilisateurs().length === 0) {
+    <p class="etat">Aucun utilisateur pour le moment.</p>
+  } @else {
+    <div class="tableau-conteneur">
+      <table class="tableau">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Date de naissance</th>
+            <th><span class="masque">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (utilisateur of utilisateurs(); track utilisateur.id) {
+            <tr>
+              <td>{{ utilisateur.nom }}</td>
+              <td>{{ utilisateur.prenom }}</td>
+              <td>{{ utilisateur.login }}</td>
+              <td>{{ utilisateur.email }}</td>
+              <td>{{ utilisateur.telephone }}</td>
+              <td>{{ utilisateur.adresse }}</td>
+              <td>{{ utilisateur.dateNaissance | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="tableau__actions">
+                  @if (idAConfirmer() === utilisateur.id) {
+                    <button type="button" class="bouton bouton--danger" (click)="supprimer(utilisateur.id)">
+                      Confirmer
+                    </button>
+                    <button type="button" class="bouton bouton--discret" (click)="idAConfirmer.set(null)">
+                      Annuler
+                    </button>
+                  } @else {
+                    <button type="button" class="bouton bouton--danger" (click)="idAConfirmer.set(utilisateur.id)">
+                      Supprimer
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
