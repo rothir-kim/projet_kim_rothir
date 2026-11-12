@@ -19,9 +19,12 @@ export class Connexion {
   private routeur = inject(Router);
   private destroyRef = inject(DestroyRef);
 
+  private parametres = inject(ActivatedRoute).snapshot.queryParamMap;
+
   // Vrai quand on arrive ici juste après une inscription (/connexion?inscription=ok)
-  readonly compteCree =
-    inject(ActivatedRoute).snapshot.queryParamMap.get('inscription') === 'ok';
+  readonly compteCree = this.parametres.get('inscription') === 'ok';
+  // Page demandée avant d'être renvoyé ici par le guard (seulement une adresse du site)
+  readonly pageDeRetour = this.lirePageDeRetour(this.parametres.get('retour'));
 
   motDePasseVisible = signal(false);
   envoiEnCours = signal(false);
@@ -33,6 +36,10 @@ export class Connexion {
   });
 
   invalide = champInvalide;
+
+  private lirePageDeRetour(adresse: string | null): string | null {
+    return adresse?.startsWith('/') && !adresse.startsWith('//') ? adresse : null;
+  }
 
   seConnecter(): void {
     if (this.formulaire.invalid) {
@@ -47,7 +54,7 @@ export class Connexion {
       .connecter(login.trim(), motDePasse)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => this.routeur.navigate(['/pollutions']),
+        next: () => this.routeur.navigateByUrl(this.pageDeRetour ?? '/pollutions'),
         error: (erreur) => {
           this.envoiEnCours.set(false);
           this.erreur.set(messageErreurHttp(erreur));

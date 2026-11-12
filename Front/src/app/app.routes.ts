@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { connexionMatchGuard } from './core/guards/connexion.guard';
 
 // Chaque partie de l'appli est téléchargée seulement quand on y va (lazy loading)
 export const routes: Routes = [
@@ -10,6 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'utilisateurs',
+    canMatch: [connexionMatchGuard],
     loadChildren: () =>
       import('./features/utilisateurs/utilisateur.routes').then((m) => m.UTILISATEUR_ROUTES),
   },

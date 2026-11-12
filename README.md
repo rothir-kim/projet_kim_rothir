@@ -148,7 +148,14 @@ npm test
 | `/inscription` | Créer un compte (critères du mot de passe, adresse proposée par le service de l'IGN), puis retour à la connexion |
 | `/connexion` | Se connecter (connexion fictive, l'utilisateur est gardé dans le navigateur) |
 
-Sans connexion, on peut seulement consulter les pollutions. Les pages marquées « connexion requise » sont protégées par `connexionGuard` (`src/app/core/guards/connexion.guard.ts`), qui renvoie vers `/connexion`.
+Sans connexion, on peut seulement consulter les pollutions. Les guards sont dans `src/app/core/guards/` :
+
+- `connexionGuard` (`canActivate`) : protège la création et la modification. Sans connexion, il renvoie vers `/connexion?retour=…`, puis on revient sur la page demandée après s'être connecté.
+- `connexionMatchGuard` (`canMatch`) : protège toute la partie `/utilisateurs`, dont le code n'est même pas téléchargé sans connexion.
+- `inviteGuard` : une personne déjà connectée qui ouvre `/connexion` est renvoyée vers la liste.
+- `modificationsNonEnregistreesGuard` (`canDeactivate`) : demande confirmation avant de quitter le formulaire de pollution avec des modifications non enregistrées.
+
+Chaque partie de l'appli (`features/pollutions`, `features/auth`, `features/utilisateurs`) a son fichier de routes, chargé à la demande avec `loadChildren` (lazy loading).
 Cette protection ne concerne que l'affichage : l'API, elle, ne vérifie pas qui envoie les requêtes (connexion fictive).
 
 L'URL de l'API dépend de l'environnement (remplacement configuré par `fileReplacements` dans `angular.json`) :

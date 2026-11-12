@@ -14,8 +14,12 @@ export class Entete {
 
   utilisateurConnecte = this.serviceUser.utilisateurConnecte;
 
+  // On quitte d'abord la page (elle peut demander confirmation), puis on déconnecte
   seDeconnecter(): void {
-    this.serviceUser.deconnecter();
-    this.routeur.navigate(['/connexion']);
+    this.routeur.navigate(['/pollutions']).then((pageQuittee) => {
+      if (pageQuittee !== false) {
+        this.serviceUser.deconnecter();
+      }
+    });
   }
 }

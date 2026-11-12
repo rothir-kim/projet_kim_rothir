@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AvecModificationsNonEnregistrees } from '../../../core/guards/modifications-non-enregistrees.guard';
 import { HighlightPollutionDirective } from '../../../shared/directives/highlight-pollution.directive';
 import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../../core/modeles/pollution.modele';
 import { PollutionLevelPipe } from '../../../shared/pipes/pollution-level.pipe';
@@ -20,7 +21,7 @@ import { urlPhotoValide } from '../../../shared/validateurs/url-photo.validateur
   templateUrl: './formulaire-pollution.html',
   styleUrl: './formulaire-pollution.scss',
 })
-export class FormulairePollution {
+export class FormulairePollution implements AvecModificationsNonEnregistrees {
   private servicePollution = inject(PollutionService);
   private serviceUser = inject(UserService);
   private routeur = inject(Router);
@@ -33,6 +34,8 @@ export class FormulairePollution {
   readonly dateMax = dateDuJour();
   readonly modeEdition = this.idParametre !== null;
   readonly id = lireId(this.idParametre);
+
+  private enregistrementReussi = false;
 
   envoiEnCours = signal(false);
   erreur = signal('');
@@ -89,6 +92,10 @@ export class FormulairePollution {
 
   invalide = champInvalide;
 
+  aDesModificationsNonEnregistrees(): boolean {
+    return this.formulaire.dirty && !this.enregistrementReussi;
+  }
+
   enregistrer(): void {
     if (this.formulaire.invalid) {
       this.formulaire.markAllAsTouched();
@@ -129,7 +136,11 @@ export class FormulairePollution {
     this.erreur.set('');
     this.envoiEnCours.set(true);
     requete.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: () => this.routeur.navigate(['/pollutions']),
+      // On affiche la fiche de la pollution qui vient d'être enregistrée
+      next: (pollution) => {
+        this.enregistrementReussi = true;
+        this.routeur.navigate(['/pollutions', pollution.id]);
+      },
       error: (erreur) => {
         this.envoiEnCours.set(false);
         this.erreur.set(messageErreurHttp(erreur));
