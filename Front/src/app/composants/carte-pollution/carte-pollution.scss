@@ -45,6 +45,12 @@
   padding: 1.1rem 1.1rem 0.75rem;
 }
 
+.carte__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
 .carte__titre {
   font-size: 1.6rem;
 }

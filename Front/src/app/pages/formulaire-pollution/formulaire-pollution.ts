@@ -2,7 +2,9 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { HighlightPollutionDirective } from '../../directives/highlight-pollution.directive';
 import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../modeles/pollution.modele';
+import { PollutionLevelPipe } from '../../pipes/pollution-level.pipe';
 import { PollutionService } from '../../services/pollution-service';
 import { UserService } from '../../services/user-service';
 import { champInvalide } from '../../utilitaires/champ-invalide';
@@ -14,7 +16,7 @@ import { urlPhotoValide } from '../../validateurs/url-photo.validateur';
 
 @Component({
   selector: 'app-formulaire-pollution',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './formulaire-pollution.html',
   styleUrl: './formulaire-pollution.scss',
 })
@@ -55,6 +57,10 @@ export class FormulairePollution {
       Validators.min(-180),
       Validators.max(180),
     ]),
+    indiceDangerosite: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0), Validators.max(150)],
+    }),
     urlPhoto: new FormControl('', { nonNullable: true, validators: [urlPhotoValide] }),
   });
 
@@ -88,8 +94,17 @@ export class FormulairePollution {
       this.formulaire.markAllAsTouched();
       return;
     }
-    const { titre, type, description, date, lieu, latitude, longitude, urlPhoto } =
-      this.formulaire.getRawValue();
+    const {
+      titre,
+      type,
+      description,
+      date,
+      lieu,
+      latitude,
+      longitude,
+      indiceDangerosite,
+      urlPhoto,
+    } = this.formulaire.getRawValue();
     if (type === null || latitude === null || longitude === null) {
       return;
     }
@@ -101,6 +116,7 @@ export class FormulairePollution {
       lieu: lieu.trim(),
       latitude,
       longitude,
+      indiceDangerosite,
       urlPhoto: urlPhoto.trim() || null,
     };
     // La page est protégée par le guard : il y a toujours quelqu'un de connecté ici

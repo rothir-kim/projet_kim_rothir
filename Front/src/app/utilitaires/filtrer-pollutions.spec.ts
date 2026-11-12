@@ -12,6 +12,7 @@ const creerPollution = (id: number, lieu: string, type: Pollution['type'], date:
   latitude: 0,
   longitude: 0,
   urlPhoto: null,
+  indiceDangerosite: 0,
   auteurId: null,
   auteur: null,
 });

@@ -3,8 +3,18 @@ import { AVEC_AUTEUR, Pollution, PollutionCreation } from "../models/pollution.m
 
 // On garde seulement les champs attendus (jamais l'id ni l'auteur envoyés par le client)
 const lireSaisie = (req: Request): PollutionCreation => {
-  const { titre, type, description, date, lieu, latitude, longitude, urlPhoto } = req.body ?? {};
-  const saisie: PollutionCreation = { titre, type, description, date, lieu, latitude, longitude };
+  const { titre, type, description, date, lieu, latitude, longitude, urlPhoto, indiceDangerosite } =
+    req.body ?? {};
+  const saisie: PollutionCreation = {
+    titre,
+    type,
+    description,
+    date,
+    lieu,
+    latitude,
+    longitude,
+    indiceDangerosite,
+  };
   // Photo absente : on n'y touche pas. Vide ou null : on l'enlève
   if (urlPhoto !== undefined) {
     saisie.urlPhoto = urlPhoto || null;

@@ -18,6 +18,7 @@ export interface PollutionSaisie {
   latitude: number;
   longitude: number;
   urlPhoto: string | null;
+  indiceDangerosite: number;
 }
 
 export interface Auteur {
