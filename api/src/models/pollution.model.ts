@@ -15,6 +15,7 @@ interface PollutionAttributs {
   latitude: number;
   longitude: number;
   urlPhoto: string | null;
+  indiceDangerosite: number;
   auteurId: number | null;
 }
 
@@ -34,6 +35,7 @@ export class Pollution
   declare latitude: number;
   declare longitude: number;
   declare urlPhoto: string | null;
+  declare indiceDangerosite: number;
   declare auteurId: number | null;
   declare auteur?: User | null;
 }
@@ -97,6 +99,16 @@ Pollution.init(
       type: DataTypes.STRING(500),
       allowNull: true,
       validate: { urlHttp, len: { args: [0, 500], msg: "L'URL de la photo ne doit pas dépasser 500 caractères" } },
+    },
+    indiceDangerosite: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: "L'indice de dangerosité est requis" },
+        isInt: { msg: "L'indice de dangerosité doit être un nombre entier" },
+        min: { args: [0], msg: "L'indice de dangerosité ne peut pas être négatif" },
+        max: { args: [150], msg: "L'indice de dangerosité ne peut pas dépasser 150" },
+      },
     },
     auteurId: { type: DataTypes.INTEGER, allowNull: true },
   },

@@ -67,6 +67,17 @@
         </div>
 
         <div class="champ formulaire__pleine">
+          <label for="indiceDangerosite">Indice de dangerosité *</label>
+          @let indice = formulaire.controls.indiceDangerosite.value;
+          @let niveau = indice | pollutionLevel;
+          <div class="curseur">
+            <input id="indiceDangerosite" type="range" min="0" max="150" step="1" formControlName="indiceDangerosite" />
+            <span class="curseur__valeur">{{ indice }}</span>
+            <span class="badge" [appHighlightPollution]="niveau">{{ niveau }}</span>
+          </div>
+        </div>
+
+        <div class="champ formulaire__pleine">
           <label for="description">Description *</label>
           <textarea id="description" formControlName="description" maxlength="2000" rows="4" placeholder="Décrivez ce que vous avez observé…"></textarea>
           @if (invalide(formulaire.controls.description)) {
