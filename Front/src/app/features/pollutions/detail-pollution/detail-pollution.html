@@ -3,7 +3,11 @@
 @if (pollution(); as fiche) {
   <article class="panneau">
     <header class="detail__entete">
-      <span class="badge" [attr.data-type]="fiche.type">{{ fiche.type }}</span>
+      @let niveau = fiche.indiceDangerosite | pollutionLevel;
+      <div class="detail__badges">
+        <span class="badge" [attr.data-type]="fiche.type">{{ fiche.type }}</span>
+        <span class="badge" [appHighlightPollution]="niveau">{{ niveau }}</span>
+      </div>
       <h1>{{ fiche.titre }}</h1>
     </header>
 
@@ -31,6 +35,10 @@
             Auteur inconnu
           }
         </dd>
+      </div>
+      <div>
+        <dt>Indice de dangerosité</dt>
+        <dd>{{ fiche.indiceDangerosite }} / 150</dd>
       </div>
       <div>
         <dt>Coordonnées GPS</dt>

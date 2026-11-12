@@ -3,6 +3,8 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Pollution } from '../../../core/modeles/pollution.modele';
+import { HighlightPollutionDirective } from '../../../shared/directives/highlight-pollution.directive';
+import { PollutionLevelPipe } from '../../../shared/pipes/pollution-level.pipe';
 import { PollutionService } from '../../../core/services/pollution-service';
 import { UserService } from '../../../core/services/user-service';
 import { lireId } from '../../../shared/utilitaires/lire-id';
@@ -10,7 +12,7 @@ import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-ht
 
 @Component({
   selector: 'app-detail-pollution',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './detail-pollution.html',
   styleUrl: './detail-pollution.scss',
 })
