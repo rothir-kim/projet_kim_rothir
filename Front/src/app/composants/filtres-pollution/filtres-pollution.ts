@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FILTRES_VIDES, Filtres } from '../../modeles/filtres.modele';
 import { TYPES_POLLUTION, TypePollution } from '../../modeles/pollution.modele';
@@ -13,6 +13,11 @@ export class FiltresPollution {
   readonly types = TYPES_POLLUTION;
   filtres = input.required<Filtres>();
   filtresChange = output<Filtres>();
+
+  datesInversees = computed(() => {
+    const { dateDebut, dateFin } = this.filtres();
+    return dateDebut !== '' && dateFin !== '' && dateDebut > dateFin;
+  });
 
   changerLieu(lieu: string): void {
     this.filtresChange.emit({ ...this.filtres(), lieu });

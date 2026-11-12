@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Pollution } from '../../modeles/pollution.modele';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-carte-pollution',
@@ -13,6 +14,7 @@ export class CartePollution {
   pollution = input.required<Pollution>();
   suppressionConfirmee = output<number>();
   confirmationEnCours = signal(false);
+  utilisateurConnecte = inject(UserService).utilisateurConnecte;
 
   demanderConfirmation(): void {
     this.confirmationEnCours.set(true);

@@ -7,7 +7,7 @@
   padding: 1.1rem;
   background: var(--surface);
   border: 1px solid var(--bordure);
-  border-radius: 16px;
+  border-radius: var(--rayon-grand);
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
@@ -16,4 +16,9 @@
   @media (max-width: 560px) {
     grid-template-columns: 1fr;
   }
+}
+
+.filtres__erreur {
+  grid-column: 1 / -1;
+  margin: 0;
 }

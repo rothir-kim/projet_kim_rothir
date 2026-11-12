@@ -1,0 +1,143 @@
+<section class="panneau">
+  <h1>Créer un compte</h1>
+  <p class="formulaire__intro">Tous les champs sont obligatoires.</p>
+
+  @if (erreur()) {
+    <div class="alerte" role="alert">{{ erreur() }}</div>
+  }
+
+  <form [formGroup]="formulaire" (ngSubmit)="enregistrer()" novalidate>
+    <div class="formulaire__grille">
+      <div class="champ formulaire__pleine">
+        <label for="login">Login *</label>
+        <input id="login" type="text" formControlName="login" maxlength="50" autocomplete="username" />
+        @if (invalide(formulaire.controls.login)) {
+          <span class="champ__erreur">Le login est requis.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="motDePasse">Mot de passe *</label>
+        <div class="champ__mot-de-passe">
+          <input
+            id="motDePasse"
+            [type]="motDePasseVisible() ? 'text' : 'password'"
+            formControlName="motDePasse"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="bouton-oeil"
+            (click)="motDePasseVisible.set(!motDePasseVisible())"
+            [attr.aria-label]="motDePasseVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          >
+            <app-icone-oeil [barre]="motDePasseVisible()" />
+          </button>
+        </div>
+        <ul class="criteres">
+          @for (critere of criteres(); track critere.libelle) {
+            <li [class.criteres__ok]="critere.respecte">
+              {{ critere.respecte ? '✓' : '✗' }} {{ critere.libelle }}
+            </li>
+          }
+        </ul>
+        @if (invalide(formulaire.controls.motDePasse)) {
+          <span class="champ__erreur">Le mot de passe ne respecte pas tous les critères.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="confirmation">Confirmation du mot de passe *</label>
+        <div class="champ__mot-de-passe">
+          <input
+            id="confirmation"
+            [type]="confirmationVisible() ? 'text' : 'password'"
+            formControlName="confirmation"
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="bouton-oeil"
+            (click)="confirmationVisible.set(!confirmationVisible())"
+            [attr.aria-label]="confirmationVisible() ? 'Masquer la confirmation' : 'Afficher la confirmation'"
+          >
+            <app-icone-oeil [barre]="confirmationVisible()" />
+          </button>
+        </div>
+        @if (confirmationInvalide()) {
+          <span class="champ__erreur">Les deux mots de passe doivent être identiques.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="nom">Nom *</label>
+        <input id="nom" type="text" formControlName="nom" maxlength="100" autocomplete="family-name" />
+        @if (invalide(formulaire.controls.nom)) {
+          <span class="champ__erreur">Le nom est requis.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="prenom">Prénom *</label>
+        <input id="prenom" type="text" formControlName="prenom" maxlength="100" autocomplete="given-name" />
+        @if (invalide(formulaire.controls.prenom)) {
+          <span class="champ__erreur">Le prénom est requis.</span>
+        }
+      </div>
+
+      <div class="champ formulaire__pleine">
+        <label for="adresse">Adresse *</label>
+        <input
+          id="adresse"
+          type="text"
+          formControlName="adresse"
+          maxlength="255"
+          list="suggestions-adresse"
+          autocomplete="off"
+          placeholder="Commencez à taper, puis choisissez dans la liste"
+        />
+        <datalist id="suggestions-adresse">
+          @for (suggestion of suggestionsAdresse(); track $index) {
+            <option [value]="suggestion"></option>
+          }
+        </datalist>
+        @if (invalide(formulaire.controls.adresse)) {
+          <span class="champ__erreur">L'adresse est requise.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="email">Email *</label>
+        <input id="email" type="email" formControlName="email" maxlength="255" autocomplete="email" placeholder="nom@exemple.fr" />
+        @if (invalide(formulaire.controls.email)) {
+          <span class="champ__erreur">Saisissez un email valide.</span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="telephone">Téléphone *</label>
+        <input id="telephone" type="tel" inputmode="numeric" formControlName="telephone" maxlength="20" autocomplete="tel" placeholder="06 12 34 56 78" />
+        @if (invalide(formulaire.controls.telephone)) {
+          <span class="champ__erreur">
+            {{ formulaire.controls.telephone.hasError('telephone') ? 'Saisissez 10 chiffres (le 0 du début et les espaces sont facultatifs).' : 'Le téléphone est requis.' }}
+          </span>
+        }
+      </div>
+
+      <div class="champ">
+        <label for="dateNaissance">Date de naissance *</label>
+        <input id="dateNaissance" type="date" formControlName="dateNaissance" [max]="dateMax" />
+        @if (invalide(formulaire.controls.dateNaissance)) {
+          <span class="champ__erreur">
+            {{ formulaire.controls.dateNaissance.hasError('dateFuture') ? 'La date ne peut pas être dans le futur.' : 'La date de naissance est requise.' }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="formulaire__actions">
+      <a class="bouton bouton--discret" [routerLink]="utilisateurConnecte() ? '/utilisateurs' : '/pollutions'">Annuler</a>
+      <button type="submit" class="bouton bouton--principal" [disabled]="envoiEnCours()">S'inscrire</button>
+    </div>
+  </form>
+</section>

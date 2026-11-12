@@ -23,12 +23,24 @@
         <dd>{{ fiche.lieu }}</dd>
       </div>
       <div>
+        <dt>Déclarée par</dt>
+        <dd>
+          @if (fiche.auteur; as auteur) {
+            {{ auteur.prenom }} {{ auteur.nom }}
+          } @else {
+            Auteur inconnu
+          }
+        </dd>
+      </div>
+      <div>
         <dt>Coordonnées GPS</dt>
         <dd>{{ fiche.latitude }}, {{ fiche.longitude }}</dd>
       </div>
     </dl>
 
-    <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
+    @if (utilisateurConnecte()) {
+      <a class="bouton bouton--principal" [routerLink]="['/pollutions', fiche.id, 'modifier']">Modifier</a>
+    }
   </article>
 } @else if (messageErreur()) {
   <div class="panneau">
