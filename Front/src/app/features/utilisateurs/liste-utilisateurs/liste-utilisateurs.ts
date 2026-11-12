@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { User } from '../../modeles/user.modele';
-import { UserService } from '../../services/user-service';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
+import { User } from '../../../core/modeles/user.modele';
+import { UserService } from '../../../core/services/user-service';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
 
 @Component({
   selector: 'app-liste-utilisateurs',

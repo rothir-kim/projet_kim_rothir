@@ -2,11 +2,11 @@ import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Pollution } from '../../modeles/pollution.modele';
-import { PollutionService } from '../../services/pollution-service';
-import { UserService } from '../../services/user-service';
-import { lireId } from '../../utilitaires/lire-id';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
+import { Pollution } from '../../../core/modeles/pollution.modele';
+import { PollutionService } from '../../../core/services/pollution-service';
+import { UserService } from '../../../core/services/user-service';
+import { lireId } from '../../../shared/utilitaires/lire-id';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
 
 @Component({
   selector: 'app-detail-pollution',

@@ -148,7 +148,7 @@ npm test
 | `/inscription` | Créer un compte (critères du mot de passe, adresse proposée par le service de l'IGN), puis retour à la connexion |
 | `/connexion` | Se connecter (connexion fictive, l'utilisateur est gardé dans le navigateur) |
 
-Sans connexion, on peut seulement consulter les pollutions. Les pages marquées « connexion requise » sont protégées par `connexionGuard` (`src/app/guards/connexion.guard.ts`), qui renvoie vers `/connexion`.
+Sans connexion, on peut seulement consulter les pollutions. Les pages marquées « connexion requise » sont protégées par `connexionGuard` (`src/app/core/guards/connexion.guard.ts`), qui renvoie vers `/connexion`.
 Cette protection ne concerne que l'affichage : l'API, elle, ne vérifie pas qui envoie les requêtes (connexion fictive).
 
 L'URL de l'API dépend de l'environnement (remplacement configuré par `fileReplacements` dans `angular.json`) :

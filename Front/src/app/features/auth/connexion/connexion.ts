@@ -2,11 +2,11 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IconeOeil } from '../../composants/icone-oeil/icone-oeil';
-import { UserService } from '../../services/user-service';
-import { champInvalide } from '../../utilitaires/champ-invalide';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
-import { nonVide } from '../../validateurs/non-vide.validateur';
+import { IconeOeil } from '../../../shared/icone-oeil/icone-oeil';
+import { UserService } from '../../../core/services/user-service';
+import { champInvalide } from '../../../shared/utilitaires/champ-invalide';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
+import { nonVide } from '../../../shared/validateurs/non-vide.validateur';
 
 @Component({
   selector: 'app-connexion',

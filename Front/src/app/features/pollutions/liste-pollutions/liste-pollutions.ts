@@ -1,14 +1,14 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { CartePollution } from '../../composants/carte-pollution/carte-pollution';
-import { FiltresPollution } from '../../composants/filtres-pollution/filtres-pollution';
-import { FILTRES_VIDES, Filtres } from '../../modeles/filtres.modele';
-import { Pollution, TYPES_POLLUTION } from '../../modeles/pollution.modele';
-import { PollutionService } from '../../services/pollution-service';
-import { UserService } from '../../services/user-service';
-import { filtrerPollutions } from '../../utilitaires/filtrer-pollutions';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
+import { CartePollution } from '../carte-pollution/carte-pollution';
+import { FiltresPollution } from '../filtres-pollution/filtres-pollution';
+import { FILTRES_VIDES, Filtres } from '../../../core/modeles/filtres.modele';
+import { Pollution, TYPES_POLLUTION } from '../../../core/modeles/pollution.modele';
+import { PollutionService } from '../../../core/services/pollution-service';
+import { UserService } from '../../../core/services/user-service';
+import { filtrerPollutions } from '../../../shared/utilitaires/filtrer-pollutions';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
 
 @Component({
   selector: 'app-liste-pollutions',

@@ -1,5 +1,5 @@
-import { Filtres } from '../modeles/filtres.modele';
-import { Pollution } from '../modeles/pollution.modele';
+import { Filtres } from '../../core/modeles/filtres.modele';
+import { Pollution } from '../../core/modeles/pollution.modele';
 
 // Enlève les accents et les majuscules : « Évry » et « evry » sont considérés comme égaux.
 const normaliser = (texte: string): string =>

@@ -1,5 +1,5 @@
-import { FILTRES_VIDES } from '../modeles/filtres.modele';
-import { Pollution } from '../modeles/pollution.modele';
+import { FILTRES_VIDES } from '../../core/modeles/filtres.modele';
+import { Pollution } from '../../core/modeles/pollution.modele';
 import { filtrerPollutions } from './filtrer-pollutions';
 
 const creerPollution = (id: number, lieu: string, type: Pollution['type'], date: string): Pollution => ({

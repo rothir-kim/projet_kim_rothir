@@ -2,17 +2,17 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HighlightPollutionDirective } from '../../directives/highlight-pollution.directive';
-import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../modeles/pollution.modele';
-import { PollutionLevelPipe } from '../../pipes/pollution-level.pipe';
-import { PollutionService } from '../../services/pollution-service';
-import { UserService } from '../../services/user-service';
-import { champInvalide } from '../../utilitaires/champ-invalide';
-import { lireId } from '../../utilitaires/lire-id';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
-import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
-import { nonVide } from '../../validateurs/non-vide.validateur';
-import { urlPhotoValide } from '../../validateurs/url-photo.validateur';
+import { HighlightPollutionDirective } from '../../../shared/directives/highlight-pollution.directive';
+import { PollutionSaisie, TYPES_POLLUTION, TypePollution } from '../../../core/modeles/pollution.modele';
+import { PollutionLevelPipe } from '../../../shared/pipes/pollution-level.pipe';
+import { PollutionService } from '../../../core/services/pollution-service';
+import { UserService } from '../../../core/services/user-service';
+import { champInvalide } from '../../../shared/utilitaires/champ-invalide';
+import { lireId } from '../../../shared/utilitaires/lire-id';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
+import { dateDuJour, dateNonFuture } from '../../../shared/validateurs/date-passee.validateur';
+import { nonVide } from '../../../shared/validateurs/non-vide.validateur';
+import { urlPhotoValide } from '../../../shared/validateurs/url-photo.validateur';
 
 @Component({
   selector: 'app-formulaire-pollution',

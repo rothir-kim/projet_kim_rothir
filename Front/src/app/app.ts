@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Entete } from './composants/entete/entete';
+import { Entete } from './core/entete/entete';
 
 @Component({
   selector: 'app-root',

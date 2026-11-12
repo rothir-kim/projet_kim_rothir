@@ -3,21 +3,21 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
-import { IconeOeil } from '../../composants/icone-oeil/icone-oeil';
-import { UserSaisie } from '../../modeles/user.modele';
-import { AdresseService } from '../../services/adresse-service';
-import { UserService } from '../../services/user-service';
-import { champInvalide } from '../../utilitaires/champ-invalide';
-import { messageErreurHttp } from '../../utilitaires/message-erreur-http';
-import { dateDuJour, dateNonFuture } from '../../validateurs/date-passee.validateur';
+import { IconeOeil } from '../../../shared/icone-oeil/icone-oeil';
+import { UserSaisie } from '../../../core/modeles/user.modele';
+import { AdresseService } from '../../../core/services/adresse-service';
+import { UserService } from '../../../core/services/user-service';
+import { champInvalide } from '../../../shared/utilitaires/champ-invalide';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
+import { dateDuJour, dateNonFuture } from '../../../shared/validateurs/date-passee.validateur';
 import {
   CRITERES_MOT_DE_PASSE,
   motDePasseRobuste,
   motsDePasseIdentiques,
-} from '../../validateurs/mot-de-passe.validateur';
-import { FORMAT_EMAIL } from '../../validateurs/email.validateur';
-import { nonVide } from '../../validateurs/non-vide.validateur';
-import { formaterTelephone, telephoneValide } from '../../validateurs/telephone.validateur';
+} from '../../../shared/validateurs/mot-de-passe.validateur';
+import { FORMAT_EMAIL } from '../../../shared/validateurs/email.validateur';
+import { nonVide } from '../../../shared/validateurs/non-vide.validateur';
+import { formaterTelephone, telephoneValide } from '../../../shared/validateurs/telephone.validateur';
 
 @Component({
   selector: 'app-inscription',

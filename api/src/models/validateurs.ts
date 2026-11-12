@@ -1,4 +1,4 @@
-// Même règle que le front (Front/src/app/validateurs/email.validateur.ts)
+// Même règle que le front (Front/src/app/shared/validateurs/email.validateur.ts)
 export const FORMAT_EMAIL = /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/;
 
 /** Vrai si la valeur est un texte non vide qui ne dépasse pas la longueur donnée. */
