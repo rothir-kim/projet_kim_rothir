@@ -1,9 +1,17 @@
-import { Component, ElementRef, afterRenderEffect, inject, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  afterRenderEffect,
+  inject,
+  viewChild,
+} from '@angular/core';
 import { ConfirmationService } from '../../core/services/confirmation-service';
 
 /** La fenêtre de confirmation, posée une seule fois dans app.html. */
 @Component({
   selector: 'app-fenetre-confirmation',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './fenetre-confirmation.html',
   styleUrl: './fenetre-confirmation.scss',
 })

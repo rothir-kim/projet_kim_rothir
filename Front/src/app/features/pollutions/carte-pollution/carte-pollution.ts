@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HighlightPollutionDirective } from '../../../shared/directives/highlight-pollution.directive';
 import { Pollution } from '../../../core/modeles/pollution.modele';
@@ -8,6 +8,7 @@ import { UserService } from '../../../core/services/user-service';
 
 @Component({
   selector: 'app-carte-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './carte-pollution.html',
   styleUrl: './carte-pollution.scss',

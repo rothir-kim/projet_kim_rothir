@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AvecModificationsNonEnregistrees } from '../../../core/guards/modifications-non-enregistrees.guard';
@@ -17,6 +17,7 @@ import { urlPhotoValide } from '../../../shared/validateurs/url-photo.validateur
 
 @Component({
   selector: 'app-formulaire-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './formulaire-pollution.html',
   styleUrl: './formulaire-pollution.scss',
@@ -65,6 +66,11 @@ export class FormulairePollution implements AvecModificationsNonEnregistrees {
       validators: [Validators.min(0), Validators.max(150)],
     }),
     urlPhoto: new FormControl('', { nonNullable: true, validators: [urlPhotoValide] }),
+  });
+
+  // Le flux des valeurs du curseur devient un signal : l'affichage suit, même avec OnPush
+  indice = toSignal(this.formulaire.controls.indiceDangerosite.valueChanges, {
+    initialValue: this.formulaire.controls.indiceDangerosite.value,
   });
 
   constructor() {

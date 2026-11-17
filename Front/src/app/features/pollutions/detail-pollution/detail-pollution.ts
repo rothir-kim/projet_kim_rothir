@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Pollution } from '../../../core/modeles/pollution.modele';
@@ -12,6 +12,7 @@ import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-ht
 
 @Component({
   selector: 'app-detail-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
   templateUrl: './detail-pollution.html',
   styleUrl: './detail-pollution.scss',

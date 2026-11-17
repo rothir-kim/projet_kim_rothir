@@ -1,10 +1,11 @@
-import { Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FILTRES_VIDES, Filtres } from '../../../core/modeles/filtres.modele';
 import { TYPES_POLLUTION, TypePollution } from '../../../core/modeles/pollution.modele';
 
 @Component({
   selector: 'app-filtres-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule],
   templateUrl: './filtres-pollution.html',
   styleUrl: './filtres-pollution.scss',

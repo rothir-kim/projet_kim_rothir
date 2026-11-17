@@ -156,6 +156,8 @@ Sans connexion, on peut seulement consulter les pollutions. Les guards sont dans
 - `modificationsNonEnregistreesGuard` (`canDeactivate`) : demande confirmation avant de quitter le formulaire de pollution avec des modifications non enregistrées.
 
 Chaque partie de l'appli (`features/pollutions`, `features/auth`, `features/utilisateurs`) a son fichier de routes, chargé à la demande avec `loadChildren` (lazy loading).
+
+Tous les composants utilisent la stratégie `OnPush` : Angular ne les revérifie que si leurs entrées (`input()`) changent, si un événement vient d'eux, ou si un signal qu'ils affichent change. Les données affichées sont donc toujours des signaux, et on crée un nouvel objet au lieu de modifier l'ancien (ex. : les filtres).
 Cette protection ne concerne que l'affichage : l'API, elle, ne vérifie pas qui envoie les requêtes (connexion fictive).
 
 L'URL de l'API dépend de l'environnement (remplacement configuré par `fileReplacements` dans `angular.json`) :

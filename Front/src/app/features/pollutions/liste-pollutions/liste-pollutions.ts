@@ -1,4 +1,11 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { CartePollution } from '../carte-pollution/carte-pollution';
@@ -12,6 +19,7 @@ import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-ht
 
 @Component({
   selector: 'app-liste-pollutions',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, CartePollution, FiltresPollution],
   templateUrl: './liste-pollutions.html',
   styleUrl: './liste-pollutions.scss',
