@@ -70,7 +70,8 @@
           <label for="indiceDangerosite">Indice de dangerosité *</label>
           @let niveau = indice() | pollutionLevel;
           <div class="curseur">
-            <input id="indiceDangerosite" type="range" min="0" max="150" step="1" formControlName="indiceDangerosite" />
+            <input id="indiceDangerosite" #curseur type="range" min="0" max="150" step="1"
+              [value]="indice() ?? 0" (input)="choisirIndice(curseur.valueAsNumber)" />
             <input class="curseur__saisie" type="number" min="0" max="150" step="1"
               formControlName="indiceDangerosite" aria-label="Indice de dangerosité, à taper" />
             <span class="badge" [appHighlightPollution]="niveau">{{ niveau }}</span>

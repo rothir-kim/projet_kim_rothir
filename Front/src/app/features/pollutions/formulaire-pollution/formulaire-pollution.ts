@@ -61,7 +61,6 @@ export class FormulairePollution implements AvecModificationsNonEnregistrees {
       Validators.min(-180),
       Validators.max(180),
     ]),
-    // Nombre entier entre 0 et 150 (le curseur et la case à taper partagent ce champ)
     indiceDangerosite: new FormControl<number | null>(0, [
       Validators.required,
       Validators.min(0),
@@ -100,6 +99,13 @@ export class FormulairePollution implements AvecModificationsNonEnregistrees {
   }
 
   invalide = champInvalide;
+
+  // Le curseur écrit dans le champ : la case à taper et l'étiquette suivent
+  choisirIndice(valeur: number): void {
+    const champ = this.formulaire.controls.indiceDangerosite;
+    champ.setValue(valeur);
+    champ.markAsDirty();
+  }
 
   aDesModificationsNonEnregistrees(): boolean {
     return this.formulaire.dirty && !this.enregistrementReussi;
