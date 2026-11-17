@@ -1,0 +1,43 @@
+import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Pollution } from '../../../core/modeles/pollution.modele';
+import { HighlightPollutionDirective } from '../../../shared/directives/highlight-pollution.directive';
+import { PollutionLevelPipe } from '../../../shared/pipes/pollution-level.pipe';
+import { PollutionService } from '../../../core/services/pollution-service';
+import { UserService } from '../../../core/services/user-service';
+import { lireId } from '../../../shared/utilitaires/lire-id';
+import { messageErreurHttp } from '../../../shared/utilitaires/message-erreur-http';
+
+@Component({
+  selector: 'app-detail-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [DatePipe, RouterLink, PollutionLevelPipe, HighlightPollutionDirective],
+  templateUrl: './detail-pollution.html',
+  styleUrl: './detail-pollution.scss',
+})
+export class DetailPollution {
+  private servicePollution = inject(PollutionService);
+  private destroyRef = inject(DestroyRef);
+  private id = lireId(inject(ActivatedRoute).snapshot.paramMap.get('id'));
+
+  utilisateurConnecte = inject(UserService).utilisateurConnecte;
+
+  pollution = signal<Pollution | null>(null);
+  messageErreur = signal('');
+
+  constructor() {
+    if (this.id === null) {
+      this.messageErreur.set('Cette pollution est introuvable.');
+      return;
+    }
+    this.servicePollution
+      .obtenir(this.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (pollution) => this.pollution.set(pollution),
+        error: (erreur) => this.messageErreur.set(messageErreurHttp(erreur)),
+      });
+  }
+}

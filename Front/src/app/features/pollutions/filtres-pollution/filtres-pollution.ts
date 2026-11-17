@@ -1,0 +1,42 @@
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { FILTRES_VIDES, Filtres } from '../../../core/modeles/filtres.modele';
+import { TYPES_POLLUTION, TypePollution } from '../../../core/modeles/pollution.modele';
+
+@Component({
+  selector: 'app-filtres-pollution',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule],
+  templateUrl: './filtres-pollution.html',
+  styleUrl: './filtres-pollution.scss',
+})
+export class FiltresPollution {
+  readonly types = TYPES_POLLUTION;
+  filtres = input.required<Filtres>();
+  filtresChange = output<Filtres>();
+
+  datesInversees = computed(() => {
+    const { dateDebut, dateFin } = this.filtres();
+    return dateDebut !== '' && dateFin !== '' && dateDebut > dateFin;
+  });
+
+  changerLieu(lieu: string): void {
+    this.filtresChange.emit({ ...this.filtres(), lieu });
+  }
+
+  changerType(type: TypePollution | ''): void {
+    this.filtresChange.emit({ ...this.filtres(), type });
+  }
+
+  changerDateDebut(dateDebut: string): void {
+    this.filtresChange.emit({ ...this.filtres(), dateDebut });
+  }
+
+  changerDateFin(dateFin: string): void {
+    this.filtresChange.emit({ ...this.filtres(), dateFin });
+  }
+
+  reinitialiser(): void {
+    this.filtresChange.emit({ ...FILTRES_VIDES });
+  }
+}
