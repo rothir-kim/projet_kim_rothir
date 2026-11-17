@@ -71,9 +71,13 @@
           @let niveau = indice() | pollutionLevel;
           <div class="curseur">
             <input id="indiceDangerosite" type="range" min="0" max="150" step="1" formControlName="indiceDangerosite" />
-            <span class="curseur__valeur">{{ indice() }}</span>
+            <input class="curseur__saisie" type="number" min="0" max="150" step="1"
+              formControlName="indiceDangerosite" aria-label="Indice de dangerosité, à taper" />
             <span class="badge" [appHighlightPollution]="niveau">{{ niveau }}</span>
           </div>
+          @if (invalide(formulaire.controls.indiceDangerosite)) {
+            <span class="champ__erreur">Saisissez un nombre entier entre 0 et 150.</span>
+          }
         </div>
 
         <div class="champ formulaire__pleine">

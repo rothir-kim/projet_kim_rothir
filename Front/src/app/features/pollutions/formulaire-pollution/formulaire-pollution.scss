@@ -45,9 +45,8 @@
   }
 }
 
-.curseur__valeur {
-  min-width: 2.5rem;
-  color: var(--principal);
+.curseur__saisie {
+  width: 5.5rem;
   font-weight: 700;
-  text-align: right;
+  text-align: center;
 }

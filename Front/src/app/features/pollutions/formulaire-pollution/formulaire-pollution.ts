@@ -61,10 +61,13 @@ export class FormulairePollution implements AvecModificationsNonEnregistrees {
       Validators.min(-180),
       Validators.max(180),
     ]),
-    indiceDangerosite: new FormControl(0, {
-      nonNullable: true,
-      validators: [Validators.min(0), Validators.max(150)],
-    }),
+    // Nombre entier entre 0 et 150 (le curseur et la case à taper partagent ce champ)
+    indiceDangerosite: new FormControl<number | null>(0, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(150),
+      Validators.pattern(/^[0-9]+$/),
+    ]),
     urlPhoto: new FormControl('', { nonNullable: true, validators: [urlPhotoValide] }),
   });
 
@@ -118,7 +121,7 @@ export class FormulairePollution implements AvecModificationsNonEnregistrees {
       indiceDangerosite,
       urlPhoto,
     } = this.formulaire.getRawValue();
-    if (type === null || latitude === null || longitude === null) {
+    if (type === null || indiceDangerosite === null || latitude === null || longitude === null) {
       return;
     }
     const saisie: PollutionSaisie = {
