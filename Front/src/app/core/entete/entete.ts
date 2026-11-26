@@ -17,8 +17,10 @@ export class Entete {
 
   // On quitte d'abord la page (elle peut demander confirmation), puis on déconnecte
   seDeconnecter(): void {
+    // Sur la liste, la navigation est ignorée (même adresse) et renvoie false : il n'y a rien à quitter
+    const dejaSurLaListe = this.routeur.url === '/pollutions';
     this.routeur.navigate(['/pollutions']).then((pageQuittee) => {
-      if (pageQuittee !== false) {
+      if (pageQuittee || dejaSurLaListe) {
         this.serviceUser.deconnecter();
       }
     });
