@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { compare } from "bcryptjs";
 import { User } from "../models/user.model";
+import { erreursUtilisateur, refuserSiErreurs } from "../models/erreurs-saisie";
 
-// Les vérifications (mot de passe, téléphone…) et le hachage sont faits dans le modèle
 export const getAll = async (_req: Request, res: Response) => {
   const utilisateurs = await User.findAll({ order: [["nom", "ASC"], ["prenom", "ASC"]] });
   res.json(utilisateurs);
@@ -10,6 +10,11 @@ export const getAll = async (_req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   const { login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance } = req.body ?? {};
+
+  if (refuserSiErreurs(res, erreursUtilisateur({ login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance }))) {
+    return;
+  }
+
   const utilisateur = await User.create({
     login,
     motDePasse,

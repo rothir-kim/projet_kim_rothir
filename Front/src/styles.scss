@@ -274,6 +274,16 @@ img {
   color: var(--succes);
 }
 
+.info {
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: var(--rayon);
+  background: var(--ligne-survol);
+  color: var(--accent-fonce);
+}
+
 .etat {
   padding: 2rem 0;
   color: var(--texte-doux);

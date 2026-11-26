@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { erreursPollution, refuserSiErreurs } from "../models/erreurs-saisie";
 import { AVEC_AUTEUR, Pollution, PollutionCreation } from "../models/pollution.model";
 
 // On garde seulement les champs attendus (jamais l'id ni l'auteur envoyés par le client)
@@ -45,7 +46,11 @@ export const create = async (req: Request, res: Response) => {
     res.status(400).json({ message: "Données invalides", details: ["L'auteur est obligatoire"] });
     return;
   }
-  const pollution = await Pollution.create({ ...lireSaisie(req), auteurId });
+  const saisie = lireSaisie(req);
+  if (refuserSiErreurs(res, erreursPollution(saisie))) {
+    return;
+  }
+  const pollution = await Pollution.create({ ...saisie, auteurId });
   res.status(201).json(await Pollution.findByPk(pollution.id, AVEC_AUTEUR));
 };
 
@@ -55,7 +60,11 @@ export const update = async (req: Request, res: Response) => {
     res.status(404).json({ message: "Pollution introuvable" });
     return;
   }
-  await pollution.update(lireSaisie(req));
+  const saisie = lireSaisie(req);
+  if (refuserSiErreurs(res, erreursPollution(saisie))) {
+    return;
+  }
+  await pollution.update(saisie);
   res.json(await Pollution.findByPk(pollution.id, AVEC_AUTEUR));
 };
 

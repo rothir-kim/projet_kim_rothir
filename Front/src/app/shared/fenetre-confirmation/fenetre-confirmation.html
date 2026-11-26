@@ -1,0 +1,12 @@
+<dialog #fenetre class="fenetre" aria-labelledby="fenetre-titre" (cancel)="repondre(false)">
+  @if (demande(); as demande) {
+    <h2 id="fenetre-titre" class="fenetre__titre">{{ demande.titre }}</h2>
+    <p class="fenetre__message">{{ demande.message }}</p>
+    <div class="fenetre__actions">
+      <button type="button" class="bouton" (click)="repondre(false)">{{ demande.boutonAnnuler }}</button>
+      <button type="button" class="bouton bouton--danger" (click)="repondre(true)">
+        {{ demande.boutonConfirmer }}
+      </button>
+    </div>
+  }
+</dialog>

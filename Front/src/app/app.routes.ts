@@ -1,24 +1,23 @@
 import { Routes } from '@angular/router';
-import { connexionGuard } from './guards/connexion.guard';
-import { Connexion } from './pages/connexion/connexion';
-import { DetailPollution } from './pages/detail-pollution/detail-pollution';
-import { FormulairePollution } from './pages/formulaire-pollution/formulaire-pollution';
-import { Inscription } from './pages/inscription/inscription';
-import { ListePollutions } from './pages/liste-pollutions/liste-pollutions';
-import { ListeUtilisateurs } from './pages/liste-utilisateurs/liste-utilisateurs';
+import { connexionMatchGuard } from './core/guards/connexion.guard';
 
+// Chaque partie de l'appli est téléchargée seulement quand on y va (lazy loading)
 export const routes: Routes = [
   { path: '', redirectTo: 'pollutions', pathMatch: 'full' },
-  { path: 'pollutions', component: ListePollutions },
-  { path: 'pollutions/nouvelle', component: FormulairePollution, canActivate: [connexionGuard] },
-  { path: 'pollutions/:id', component: DetailPollution },
   {
-    path: 'pollutions/:id/modifier',
-    component: FormulairePollution,
-    canActivate: [connexionGuard],
+    path: 'pollutions',
+    loadChildren: () =>
+      import('./features/pollutions/pollution.routes').then((m) => m.POLLUTION_ROUTES),
   },
-  { path: 'utilisateurs', component: ListeUtilisateurs, canActivate: [connexionGuard] },
-  { path: 'inscription', component: Inscription },
-  { path: 'connexion', component: Connexion },
+  {
+    path: 'utilisateurs',
+    canMatch: [connexionMatchGuard],
+    loadChildren: () =>
+      import('./features/utilisateurs/utilisateur.routes').then((m) => m.UTILISATEUR_ROUTES),
+  },
+  {
+    path: '',
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
+  },
   { path: '**', redirectTo: 'pollutions' },
 ];
