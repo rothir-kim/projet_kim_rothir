@@ -1,10 +1,11 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, CanMatchFn, Router, UrlTree } from '@angular/router';
-import { UserService } from '../services/user-service';
+import { Store } from '@ngxs/store';
+import { AuthState } from '../states/auth/auth.state';
 
 // Laisse passer si quelqu'un est connecté, sinon renvoie vers la connexion en retenant la page demandée
 function exigerConnexion(pageDemandee: string): true | UrlTree {
-  if (inject(UserService).utilisateurConnecte()) {
+  if (inject(Store).selectSnapshot(AuthState.isAuthenticated)) {
     return true;
   }
   return inject(Router).createUrlTree(['/connexion'], { queryParams: { retour: pageDemandee } });
