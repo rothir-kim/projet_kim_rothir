@@ -11,7 +11,7 @@ import {
   MESSAGE_MOT_DE_PASSE,
 } from "./validateurs";
 
-// Un contrôle par champ reçu : chaque fonction renvoie la liste des erreurs (vide si tout est bon)
+// Un contrôle par champ : on renvoie toutes les erreurs d'un coup (liste vide si tout est bon)
 
 export const erreursPollution = (saisie: PollutionCreation): string[] => {
   const erreurs: string[] = [];
@@ -85,7 +85,7 @@ export const erreursUtilisateur = (saisie: SaisieUtilisateur): string[] => {
   return erreurs;
 };
 
-/** Répond 400 avec la liste des erreurs et renvoie vrai, ou renvoie faux s'il n'y a aucune erreur. */
+// Répond 400 s'il y a des erreurs (et renvoie true pour que le contrôleur s'arrête)
 export const refuserSiErreurs = (res: Response, erreurs: string[]): boolean => {
   if (erreurs.length === 0) {
     return false;

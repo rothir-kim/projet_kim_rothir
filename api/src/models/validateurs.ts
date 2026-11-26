@@ -1,25 +1,19 @@
 // Même règle que le front (Front/src/app/shared/validateurs/email.validateur.ts)
 export const FORMAT_EMAIL = /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/;
 
-/** Vrai si la valeur est un texte non vide qui ne dépasse pas la longueur donnée. */
 export const estTexteValide = (valeur: unknown, longueurMax: number): boolean =>
   typeof valeur === "string" && valeur.trim() !== "" && valeur.length <= longueurMax;
 
-/** Vrai si la valeur est un nombre entre le minimum et le maximum. */
 export const estNombreEntre = (valeur: unknown, min: number, max: number): boolean =>
   typeof valeur === "number" && Number.isFinite(valeur) && valeur >= min && valeur <= max;
 
-/** Vrai si la valeur est un email bien écrit (255 caractères maximum). */
 export const estEmailValide = (valeur: unknown): boolean =>
   typeof valeur === "string" && valeur.length <= 255 && FORMAT_EMAIL.test(valeur);
 
 // Un jour de marge : le serveur Render est en heure UTC, pas à l'heure française
 const estDansLeFutur = (date: Date): boolean => date > new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-/**
- * Vrai si la valeur est une date au format AAAA-MM-JJ qui n'est pas dans le futur.
- * On compare avec toISOString() : "1", "salut" ou "2024-02-30" sont refusés.
- */
+// Format AAAA-MM-JJ exigé : on relit la date avec toISOString() pour refuser "1", "salut" ou "2024-02-30"
 export const estDatePassee = (valeur: unknown): boolean => {
   if (typeof valeur !== "string") {
     return false;
@@ -28,7 +22,6 @@ export const estDatePassee = (valeur: unknown): boolean => {
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === valeur && !estDansLeFutur(date);
 };
 
-/** Vrai si la valeur est une adresse web qui commence par http:// ou https://. */
 export const estUrlHttp = (valeur: unknown): boolean => {
   try {
     const { protocol } = new URL(String(valeur));
@@ -38,7 +31,6 @@ export const estUrlHttp = (valeur: unknown): boolean => {
   }
 };
 
-/** Vrai si le mot de passe respecte les règles de robustesse. */
 export const estMotDePasseRobuste = (valeur: unknown): boolean => {
   const texte = String(valeur ?? "");
   return (
@@ -50,7 +42,6 @@ export const estMotDePasseRobuste = (valeur: unknown): boolean => {
   );
 };
 
-/** Message affiché quand le mot de passe n'est pas assez robuste. */
 export const MESSAGE_MOT_DE_PASSE =
   "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial";
 
