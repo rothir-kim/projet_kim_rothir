@@ -1,28 +1,20 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { User, UserSaisie } from '../modeles/user.modele';
-
-const CLE_STOCKAGE = 'utilisateurConnecte';
-
-// Relit l'utilisateur gardé dans le navigateur (null si personne n'est connecté)
-function lireUtilisateurStocke(): User | null {
-  try {
-    const texte = localStorage.getItem(CLE_STOCKAGE);
-    return texte ? (JSON.parse(texte) as User) : null;
-  } catch {
-    return null;
-  }
-}
+import { Login, Logout } from '../states/auth/auth.actions';
+import { AuthState } from '../states/auth/auth.state';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private http = inject(HttpClient);
+  private store = inject(Store);
   private urlBase = `${environment.apiUrl}/users`;
-  private connecte = signal<User | null>(lireUtilisateurStocke());
 
-  readonly utilisateurConnecte = this.connecte.asReadonly();
+  // L'utilisateur connecté est gardé dans le store
+  readonly utilisateurConnecte = this.store.selectSignal(AuthState.user);
 
   lister(): Observable<User[]> {
     return this.http.get<User[]>(this.urlBase);
@@ -37,16 +29,12 @@ export class UserService {
   }
 
   connecter(login: string, motDePasse: string): Observable<User> {
-    return this.http.post<User>(`${this.urlBase}/login`, { login, motDePasse }).pipe(
-      tap((utilisateur) => {
-        this.connecte.set(utilisateur);
-        localStorage.setItem(CLE_STOCKAGE, JSON.stringify(utilisateur));
-      }),
-    );
+    return this.http
+      .post<User>(`${this.urlBase}/login`, { login, motDePasse })
+      .pipe(tap((utilisateur) => this.store.dispatch(new Login(utilisateur))));
   }
 
   deconnecter(): void {
-    this.connecte.set(null);
-    localStorage.removeItem(CLE_STOCKAGE);
+    this.store.dispatch(new Logout());
   }
 }
