@@ -16,13 +16,16 @@ export const estEmailValide = (valeur: unknown): boolean =>
 // Un jour de marge : le serveur Render est en heure UTC, pas à l'heure française
 const estDansLeFutur = (date: Date): boolean => date > new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-/** Vrai si la valeur est une date valide qui n'est pas dans le futur. */
+/**
+ * Vrai si la valeur est une date au format AAAA-MM-JJ qui n'est pas dans le futur.
+ * On compare avec toISOString() : "1", "salut" ou "2024-02-30" sont refusés.
+ */
 export const estDatePassee = (valeur: unknown): boolean => {
   if (typeof valeur !== "string") {
     return false;
   }
   const date = new Date(valeur);
-  return !Number.isNaN(date.getTime()) && !estDansLeFutur(date);
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === valeur && !estDansLeFutur(date);
 };
 
 /** Vrai si la valeur est une adresse web qui commence par http:// ou https://. */

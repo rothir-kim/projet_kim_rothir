@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
 import { compare } from "bcryptjs";
 import { User } from "../models/user.model";
-import {
-  estDatePassee,
-  estEmailValide,
-  estMotDePasseRobuste,
-  estTexteValide,
-  formaterTelephone,
-  MESSAGE_MOT_DE_PASSE,
-} from "../models/validateurs";
+import { erreursUtilisateur, refuserSiErreurs } from "../models/erreurs-saisie";
 
 export const getAll = async (_req: Request, res: Response) => {
   const utilisateurs = await User.findAll({ order: [["nom", "ASC"], ["prenom", "ASC"]] });
@@ -18,34 +11,7 @@ export const getAll = async (_req: Request, res: Response) => {
 export const create = async (req: Request, res: Response) => {
   const { login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance } = req.body ?? {};
 
-  // Un contrôle par champ reçu : on liste toutes les erreurs avant de répondre
-  const erreurs: string[] = [];
-  if (!estTexteValide(login, 50)) {
-    erreurs.push("Le login est requis (50 caractères maximum)");
-  }
-  if (!estMotDePasseRobuste(motDePasse)) {
-    erreurs.push(MESSAGE_MOT_DE_PASSE);
-  }
-  if (!estTexteValide(nom, 100)) {
-    erreurs.push("Le nom est requis (100 caractères maximum)");
-  }
-  if (!estTexteValide(prenom, 100)) {
-    erreurs.push("Le prénom est requis (100 caractères maximum)");
-  }
-  if (!estTexteValide(adresse, 255)) {
-    erreurs.push("L'adresse est requise (255 caractères maximum)");
-  }
-  if (!estEmailValide(email)) {
-    erreurs.push("L'email n'est pas valide");
-  }
-  if (formaterTelephone(telephone) === null) {
-    erreurs.push("Le téléphone doit contenir 10 chiffres");
-  }
-  if (!estDatePassee(dateNaissance)) {
-    erreurs.push("La date de naissance doit être une date valide, pas dans le futur");
-  }
-  if (erreurs.length > 0) {
-    res.status(400).json({ message: "Données invalides", details: erreurs });
+  if (refuserSiErreurs(res, erreursUtilisateur({ login, motDePasse, nom, prenom, adresse, email, telephone, dateNaissance }))) {
     return;
   }
 
